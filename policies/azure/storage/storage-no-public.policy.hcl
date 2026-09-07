@@ -13,8 +13,8 @@ policy {
 
 resource_policy "azurerm_storage_account" "disable_public_network_access" {
   locals {
-    public_network_access_raw     = core::try(attrs.public_network_access_enabled, null)
-    public_network_access_enabled = local.public_network_access_raw == null ? true : local.public_network_access_raw
+    public_network_access_enabled_raw = core::try(attrs.public_network_access_enabled, null)
+    public_network_access_enabled     = local.public_network_access_enabled_raw == null ? true : local.public_network_access_enabled_raw
   }
 
   enforcement_level = "advisory"

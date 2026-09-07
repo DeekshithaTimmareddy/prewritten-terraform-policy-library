@@ -27,7 +27,7 @@ resource "azurerm_storage_account" "fail_public_network_access_enabled" {
   }
 }
 
-# Omission is noncompliant because the AzureRM provider default is true.
+# Omission is noncompliant because the azurerm v4 provider default is true (enabled).
 resource "azurerm_storage_account" "fail_public_network_access_omitted" {
   expect_failure = true
   attrs = {
@@ -39,7 +39,7 @@ resource "azurerm_storage_account" "fail_public_network_access_omitted" {
   }
 }
 
-# Explicit null is normalized to enabled and remains noncompliant.
+# Explicit null is normalized to true (provider default) and remains noncompliant.
 resource "azurerm_storage_account" "fail_public_network_access_null" {
   expect_failure = true
   attrs = {
