@@ -1,4 +1,4 @@
-# Ensure there are between 2 and 3 Subscription Owners
+# Ensure no more than 3 Subscription Owners are declared in the Terraform plan
 
 | Provider | Category |
 | -------- | -------- |
@@ -6,7 +6,7 @@
 
 ## Description
 
-This control checks whether an Azure subscription has between 2 and 3 Owner role assignments at the subscription scope. Having at least two owners ensures redundancy and prevents a single point of failure for administrative access. Having no more than three owners reduces the risk of a compromised owner account and limits the blast radius of excessive privilege.
+This control checks that the Terraform plan does not declare more than 3 Owner role assignments for an Azure subscription. Having at least two owners ensures redundancy and prevents a single point of failure for administrative access. Having no more than three owners reduces the risk of a compromised owner account and limits the blast radius of excessive privilege.
 
 Subscription owners have full administrative control over all resources in the subscription. Assigning the Owner role to too few principals leaves the subscription at risk of being locked out if an owner account is compromised or unavailable. Assigning it to too many principals unnecessarily widens the attack surface.
 

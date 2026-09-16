@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure there are between 2 and 3 Subscription Owners
+# Ensure no more than 3 Subscription Owners are declared in the Terraform plan
 
 policy {
   required_providers {
