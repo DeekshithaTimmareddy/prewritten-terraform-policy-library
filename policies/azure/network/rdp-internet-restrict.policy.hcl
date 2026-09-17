@@ -25,12 +25,12 @@ resource_policy "azurerm_network_security_group" "restrict_rdp_from_internet" {
     # absent) is safely coerced to a usable default before iteration --
     # core::try(value, default) does not replace an explicit null.
     normalized_rules = [for rule in local.security_rules : {
-      direction                = core::try(rule.direction, "")
-      access                   = core::try(rule.access, "")
-      protocol                 = core::try(rule.protocol, "")
-      source_address_prefix    = core::try(rule.source_address_prefix, "")
+      direction                = core::try(rule.direction, null) != null ? rule.direction : ""
+      access                   = core::try(rule.access, null) != null ? rule.access : ""
+      protocol                 = core::try(rule.protocol, null) != null ? rule.protocol : ""
+      source_address_prefix    = core::try(rule.source_address_prefix, null) != null ? rule.source_address_prefix : ""
       source_address_prefixes  = core::try(rule.source_address_prefixes, null) != null ? rule.source_address_prefixes : []
-      destination_port_range   = core::try(rule.destination_port_range, "")
+      destination_port_range   = core::try(rule.destination_port_range, null) != null ? rule.destination_port_range : ""
       destination_port_ranges  = core::try(rule.destination_port_ranges, null) != null ? rule.destination_port_ranges : []
     }]
 
@@ -50,12 +50,12 @@ resource_policy "azurerm_network_security_group" "restrict_rdp_from_internet" {
 
 resource_policy "azurerm_network_security_rule" "restrict_rdp_from_internet_standalone" {
   locals {
-    direction        = core::try(attrs.direction, "")
-    access           = core::try(attrs.access, "")
-    protocol         = core::try(attrs.protocol, "")
-    source_prefix    = core::try(attrs.source_address_prefix, "")
+    direction        = core::try(attrs.direction, null) != null ? attrs.direction : ""
+    access           = core::try(attrs.access, null) != null ? attrs.access : ""
+    protocol         = core::try(attrs.protocol, null) != null ? attrs.protocol : ""
+    source_prefix    = core::try(attrs.source_address_prefix, null) != null ? attrs.source_address_prefix : ""
     source_prefixes  = core::try(attrs.source_address_prefixes, null) != null ? attrs.source_address_prefixes : []
-    dest_port_range  = core::try(attrs.destination_port_range, "")
+    dest_port_range  = core::try(attrs.destination_port_range, null) != null ? attrs.destination_port_range : ""
     dest_port_ranges = core::try(attrs.destination_port_ranges, null) != null ? attrs.destination_port_ranges : []
 
     is_inbound_allow_tcp = local.direction == "Inbound" && local.access == "Allow" && core::contains(["Tcp", "*"], local.protocol)

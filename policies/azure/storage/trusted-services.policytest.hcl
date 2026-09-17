@@ -65,7 +65,7 @@ resource "azurerm_storage_account" "fail_inline_bypass_empty" {
     public_network_access_enabled = true
     network_rules = {
       default_action = "Deny"
-      bypass         = [] 
+      bypass         = []
     }
   }
 }

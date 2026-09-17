@@ -19,7 +19,8 @@ resource_policy "azurerm_storage_account" "require_smb_aes256_encryption" {
   locals {
     account_kind_raw  = core::try(attrs.account_kind, null)
     account_kind      = local.account_kind_raw == null ? "StorageV2" : local.account_kind_raw
-    account_tier      = core::try(attrs.account_tier, "Standard")
+    account_tier_raw  = core::try(attrs.account_tier, null)
+    account_tier      = local.account_tier_raw == null ? "Standard" : local.account_tier_raw
     is_supported_kind = (
       local.account_kind == "FileStorage"
       || (local.account_kind == "StorageV2" && local.account_tier == "Standard")
