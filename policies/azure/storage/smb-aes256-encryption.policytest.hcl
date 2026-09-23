@@ -178,11 +178,11 @@ resource "azurerm_storage_account" "pass_gpv1_standard_compliant" {
     account_tier             = "Standard"
     account_replication_type = "LRS"
     account_kind             = "Storage"
-    share_properties = {
-      smb = {
+    share_properties = [{
+      smb = [{
         channel_encryption_type = ["AES-256-GCM"]
-      }
-    }
+      }]
+    }]
   }
 }
 

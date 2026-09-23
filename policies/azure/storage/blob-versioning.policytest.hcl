@@ -49,9 +49,9 @@ resource "azurerm_storage_account" "pass_hns_enabled_out_of_scope" {
     account_replication_type = "LRS"
     account_kind             = "StorageV2"
     is_hns_enabled           = true
-    blob_properties = {
+    blob_properties = [{
       versioning_enabled = false
-    }
+    }]
   }
 }
 

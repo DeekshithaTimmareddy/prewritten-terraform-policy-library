@@ -161,11 +161,11 @@ resource "azurerm_storage_account" "pass_storage_v1_with_soft_delete" {
     account_tier             = "Standard"
     account_replication_type = "LRS"
     account_kind             = "Storage"
-    blob_properties = {
-      delete_retention_policy = {
+    blob_properties = [{
+      delete_retention_policy = [{
         days = 7
-      }
-    }
+      }]
+    }]
   }
 }
 
@@ -199,8 +199,7 @@ resource "azurerm_storage_account" "fail_days_below_cis_minimum" {
   }
 }
 
-resource "azurerm_storage_account" "fail_null_retention_days" {
-  expect_failure = true
+resource "azurerm_storage_account" "pass_null_retention_days_defaults_to_provider_default" {
   attrs = {
     name                     = "nulldaysacct"
     resource_group_name      = "validation-resource-group"
@@ -208,10 +207,10 @@ resource "azurerm_storage_account" "fail_null_retention_days" {
     account_tier             = "Standard"
     account_replication_type = "LRS"
     account_kind             = "StorageV2"
-    blob_properties = {
-      delete_retention_policy = {
+    blob_properties = [{
+      delete_retention_policy = [{
         days = null
-      }
-    }
+      }]
+    }]
   }
 }
