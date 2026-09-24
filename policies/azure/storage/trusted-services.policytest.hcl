@@ -196,6 +196,32 @@ resource "azurerm_storage_account_network_rules" "pass_inline_and_standalone_bot
   }
 }
 
+resource "azurerm_storage_account" "fail_inline_compliant_standalone_noncompliant" {
+  expect_failure = true
+  attrs = {
+    id                            = "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/failinlineandstandalone"
+    name                          = "failinlineandstandalone"
+    resource_group_name           = "rg"
+    location                      = "eastus"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    public_network_access_enabled = true
+    network_rules = [{
+      default_action = "Deny"
+      bypass         = ["AzureServices"]
+    }]
+  }
+}
+
+resource "azurerm_storage_account_network_rules" "fail_inline_compliant_standalone_noncompliant" {
+  skip = true
+  attrs = {
+    storage_account_id = "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/failinlineandstandalone"
+    default_action     = "Deny"
+    bypass             = ["Logging"]
+  }
+}
+
 resource "azurerm_storage_account" "pass_public_access_disabled" {
   attrs = {
     id                            = "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/passdisabled"

@@ -39,14 +39,16 @@ resource_policy "azurerm_storage_account" "allow_trusted_microsoft_services" {
     standalone_rules      = local.standalone_id_raw != null ? core::getresources("azurerm_storage_account_network_rules", { storage_account_id = local.standalone_id_raw }) : []
     standalone_deny_rules = [for r in local.standalone_rules : r if core::try(r.default_action, "") == "Deny"]
     standalone_in_scope   = local.public_network_access_enabled && core::length(local.standalone_deny_rules) > 0
-    standalone_trusted_services = core::length(local.standalone_deny_rules) > 0 && core::length([
+    standalone_rules_trusted_services = core::length(local.standalone_deny_rules) > 0 && core::length([
       for r in local.standalone_deny_rules : r
       if core::contains(core::try(r.bypass, null) != null ? r.bypass : [], "AzureServices")
     ]) == core::length(local.standalone_deny_rules)
 
     inline_in_scope  = local.public_network_access_enabled && local.has_inline_rules && local.inline_default == "Deny"
     in_scope         = local.inline_in_scope || local.standalone_in_scope
-    trusted_services = local.inline_in_scope ? core::contains(local.inline_bypass, "AzureServices") : local.standalone_trusted_services
+    inline_trusted_services      = !local.inline_in_scope || core::contains(local.inline_bypass, "AzureServices")
+    standalone_trusted_services  = !local.standalone_in_scope || local.standalone_rules_trusted_services
+    trusted_services              = local.inline_trusted_services && local.standalone_trusted_services
   }
 
   enforcement_level = input.trusted-services-enforcement-level
