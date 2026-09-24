@@ -57,3 +57,18 @@ resource_policy "azurerm_storage_account" "allow_trusted_microsoft_services" {
     error_message = "Storage account network rules have a default action of Deny but 'AzureServices' is not included in the bypass list."
   }
 }
+
+resource_policy "azurerm_storage_account_network_rules" "allow_trusted_microsoft_services" {
+  locals {
+    default_action = core::try(attrs.default_action, "")
+    bypass_raw     = core::try(attrs.bypass, null)
+    bypass         = local.bypass_raw != null ? local.bypass_raw : []
+    in_scope       = local.default_action == "Deny"
+  }
+
+  enforcement_level = input.trusted-services-enforcement-level
+  enforce {
+    condition     = !local.in_scope || core::contains(local.bypass, "AzureServices")
+    error_message = "Storage account network rules with a default action of Deny must include AzureServices in the bypass list."
+  }
+}

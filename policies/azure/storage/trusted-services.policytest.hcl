@@ -222,6 +222,21 @@ resource "azurerm_storage_account_network_rules" "fail_inline_compliant_standalo
   }
 }
 
+resource "azurerm_storage_account_network_rules" "pass_direct_resource" {
+  attrs = {
+    default_action = "Deny"
+    bypass         = ["AzureServices"]
+  }
+}
+
+resource "azurerm_storage_account_network_rules" "fail_direct_resource" {
+  expect_failure = true
+  attrs = {
+    default_action = "Deny"
+    bypass         = ["Logging"]
+  }
+}
+
 resource "azurerm_storage_account" "pass_public_access_disabled" {
   attrs = {
     id                            = "/subscriptions/test/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/passdisabled"
