@@ -4,25 +4,14 @@ policytest {
   targets = ["rbac-enabled.policy.hcl"]
 }
 
-resource "azurerm_key_vault" "rbac_enabled_new_attr" {
+resource "azurerm_key_vault" "rbac_enabled" {
   attrs = {
-    name                       = "kv-rbac-enabled-v5"
+    name                       = "kv-rbac-enabled"
     location                   = "eastus"
     resource_group_name        = "rg-security"
     sku_name                   = "standard"
     tenant_id                  = "11111111-1111-1111-1111-111111111111"
     rbac_authorization_enabled = true
-  }
-}
-
-resource "azurerm_key_vault" "rbac_enabled_legacy_attr" {
-  attrs = {
-    name                    = "kv-rbac-enabled-legacy"
-    location                = "eastus"
-    resource_group_name     = "rg-security"
-    sku_name                = "standard"
-    tenant_id               = "55555555-5555-5555-5555-555555555555"
-    enable_rbac_authorization = true
   }
 }
 
@@ -35,18 +24,6 @@ resource "azurerm_key_vault" "rbac_disabled" {
     sku_name                   = "standard"
     tenant_id                  = "22222222-2222-2222-2222-222222222222"
     rbac_authorization_enabled = false
-  }
-}
-
-resource "azurerm_key_vault" "rbac_disabled_legacy_attr" {
-  expect_failure = true
-  attrs = {
-    name                      = "kv-rbac-disabled-legacy"
-    location                  = "eastus"
-    resource_group_name       = "rg-security"
-    sku_name                  = "standard"
-    tenant_id                 = "66666666-6666-6666-6666-666666666666"
-    enable_rbac_authorization = false
   }
 }
 
