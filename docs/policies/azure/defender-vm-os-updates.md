@@ -1,0 +1,53 @@
+# Ensure that Microsoft Defender for Cloud Checks VM Operating Systems for Updates
+
+| Provider | Category |
+| -------- | -------- |
+| Azure    | Security posture management |
+
+## Description
+
+This control checks that the Microsoft Defender for Cloud Standard plan for virtual machines is enabled so that VM operating systems can be checked for updates. It evaluates `azurerm_security_center_subscription_pricing` resources whose `resource_type` is `VirtualMachines`; an omitted `resource_type` is treated as the VirtualMachines plan.
+
+The policy requires `tier = "Standard"`. Other resource types, including the separate SQL Server plan, are outside its scope.
+
+This rule is covered by the [defender-vm-os-updates](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/security-center/defender-vm-os-updates.policy.hcl) policy.
+
+## Policy Results
+
+```bash
+trace:
+	# defender-vm-os-updates.policytest.hcl...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_standard_pass...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_standard_pass...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.vm_free_fail...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_free_fail...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.vm_tier_absent_fail...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_tier_absent_fail...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.vm_tier_null_fail...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_tier_null_fail...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.vm_resource_type_omitted_free_fail...
+	running
+	# resource.azurerm_security_center_subscription_pricing.vm_resource_type_omitted_free_fail...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.sql_standard_pass...
+	running
+	# resource.azurerm_security_center_subscription_pricing.sql_standard_pass...
+	pass
+	# resource.azurerm_security_center_subscription_pricing.sql_free_pass...
+	running
+	# resource.azurerm_security_center_subscription_pricing.sql_free_pass...
+	pass
+	# defender-vm-os-updates.policytest.hcl...
+	pass
+```
+
+---
