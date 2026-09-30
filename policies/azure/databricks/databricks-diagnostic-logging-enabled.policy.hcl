@@ -45,8 +45,8 @@ resource_policy "azurerm_databricks_workspace" "diagnostic_log_delivery" {
         for setting in local.settings_with_destination : setting
         if core::length([
           for log in core::try([for item in setting.enabled_log : item], []) : log
-          if core::lower(core::try(log.category, "")) == core::lower(required_category) ||
-          core::lower(core::try(log.category_group, "")) == "alllogs"
+          if core::lower(core::try(log.category, null) == null ? "" : core::try(log.category, null)) == core::lower(required_category) ||
+          core::lower(core::try(log.category_group, null) == null ? "" : core::try(log.category_group, null)) == "alllogs"
         ]) > 0
       ]) > 0
     ]
