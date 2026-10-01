@@ -10,6 +10,10 @@ This control checks that the endpoint protection setting is enabled in Microsoft
 
 Other Defender for Cloud setting names are outside the policy's scope. Leaving either in-scope endpoint protection setting disabled does not satisfy the control.
 
+The CIS 8.1.3.3 CLI and PowerShell audit only checks the `WDATP` setting. The policy also accepts `WDATP_UNIFIED_SOLUTION` because it controls the unified Microsoft Defender for Endpoint agent integration described in the control's notes, which is the current way to onboard servers to Defender for Endpoint.
+
+The policy only runs when the Terraform plan contains an `azurerm_security_center_setting` resource for `WDATP` or `WDATP_UNIFIED_SOLUTION`. If neither setting is managed in the configuration, the policy does not evaluate anything, so it cannot detect that endpoint protection is turned off in the subscription.
+
 This rule is covered by the [endpoint-protection-status-on](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/security-center/endpoint-protection-status-on.policy.hcl) policy.
 
 ## Policy Results
