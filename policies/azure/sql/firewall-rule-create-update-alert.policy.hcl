@@ -33,7 +33,16 @@ locals {
   has_qualifying_alert = core::try(core::length(local.qualifying_alerts), 0) > 0
 }
 
-resource_policy "*" "sql_firewall_rule_alert_exists" {
+resource_policy "azurerm_mssql_server" "sql_firewall_rule_alert_exists" {
+  enforcement_level = input.firewall-rule-create-update-alert-enforcement-level
+
+  enforce {
+    condition     = local.has_qualifying_alert
+    error_message = "An enabled activity log alert with an assigned action group must exist for category='Administrative' and operation_name='Microsoft.Sql/servers/firewallRules/write' (Create or Update SQL Server Firewall Rule)."
+  }
+}
+
+resource_policy "azurerm_mssql_firewall_rule" "sql_firewall_rule_alert_exists_for_rule" {
   enforcement_level = input.firewall-rule-create-update-alert-enforcement-level
 
   enforce {

@@ -1,7 +1,5 @@
 # Copyright IBM Corp. 2026
 
-# Ensure that an Activity Log Alert Exists for Delete SQL Server Firewall Rule
-
 policy {
   required_providers {
     azurerm = {
@@ -33,7 +31,16 @@ locals {
   delete_fw_rule_has_qualifying_alert = core::try(core::length(local.delete_fw_rule_qualifying_alerts), 0) > 0
 }
 
-resource_policy "*" "activity_log_alert_delete_sql_firewall_rule" {
+resource_policy "azurerm_mssql_server" "activity_log_alert_delete_sql_firewall_rule" {
+  enforcement_level = input.firewall-rule-delete-alert-enforcement-level
+
+  enforce {
+    condition     = local.delete_fw_rule_has_qualifying_alert
+    error_message = "An enabled activity log alert with an assigned action group must exist for category='Administrative' and operation_name='Microsoft.Sql/servers/firewallRules/delete' (Delete SQL Server Firewall Rule)."
+  }
+}
+
+resource_policy "azurerm_mssql_firewall_rule" "activity_log_alert_delete_sql_firewall_rule_for_rule" {
   enforcement_level = input.firewall-rule-delete-alert-enforcement-level
 
   enforce {
