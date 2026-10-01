@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.0.0, < 6.0.0"
+      version = ">= 5.7.0, < 6.0.0"
     }
   }
 }
@@ -16,31 +16,25 @@ input "secret-expiration-access-policy-enforcement-level" {
   default = "advisory"
 }
 
-locals {
-    policy_access_policies = core::getresources("azurerm_key_vault_access_policy", {})
-}
-
 resource_policy "azurerm_key_vault_secret" "expiration_date_set_access_policy" {
-    locals {
-        secret_vault_id = core::try(attrs.key_vault_id, null)
+  enforcement_level = input.secret-expiration-access-policy-enforcement-level
 
-        vault_uses_access_policy = core::length([
-            for ap in local.policy_access_policies :
-            ap if core::try(ap.key_vault_id, null) == local.secret_vault_id
-        ]) > 0
+  locals {
+    vault_id      = core::try(attrs.key_vault_id, null)
+    parent_vaults = local.vault_id == null ? [] : core::getresources("azurerm_key_vault", { id = local.vault_id })
+    vault_found   = core::length(local.parent_vaults) > 0
 
-        expiration_date_raw = core::try(attrs.expiration_date, null)
-        expiration_date     = local.expiration_date_raw == null ? "" : local.expiration_date_raw
+    vault_uses_rbac = local.vault_found && core::try(local.parent_vaults[0].rbac_authorization_enabled, null) == true
 
-        has_expiration = local.expiration_date != ""
-    }
+    expiration_raw = core::try(attrs.expiration_date, null)
+    expiration     = local.expiration_raw == null ? "" : local.expiration_raw
+    has_expiration = core::try(core::regex("\\S", local.expiration), null) != null
+  }
 
-    enforcement_level = input.secret-expiration-access-policy-enforcement-level
+  filter = local.vault_found && !local.vault_uses_rbac
 
-    filter = local.vault_uses_access_policy
-
-    enforce {
-        condition     = local.has_expiration
-        error_message = "Key Vault secret must have an expiration_date set (secrets in access-policy vaults must not be unexpiring)."
-    }
+  enforce {
+    condition     = local.has_expiration
+    error_message = "Key Vault secret in a vault using access policies must have a non-empty expiration_date set; by default secrets never expire."
+  }
 }

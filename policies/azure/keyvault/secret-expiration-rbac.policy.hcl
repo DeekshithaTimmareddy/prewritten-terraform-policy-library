@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.0.0, < 6.0.0"
+      version = ">= 5.7.0, < 6.0.0"
     }
   }
 }
@@ -19,8 +19,22 @@ input "secret-expiration-rbac-enforcement-level" {
 resource_policy "azurerm_key_vault_secret" "expiration_date_set_rbac" {
   enforcement_level = input.secret-expiration-rbac-enforcement-level
 
+  locals {
+    vault_id      = core::try(attrs.key_vault_id, null)
+    parent_vaults = local.vault_id == null ? [] : core::getresources("azurerm_key_vault", { id = local.vault_id })
+    vault_found   = core::length(local.parent_vaults) > 0
+
+    vault_uses_rbac = local.vault_found && core::try(local.parent_vaults[0].rbac_authorization_enabled, null) == true
+
+    expiration_raw = core::try(attrs.expiration_date, null)
+    expiration     = local.expiration_raw == null ? "" : local.expiration_raw
+    has_expiration = core::try(core::regex("\\S", local.expiration), null) != null
+  }
+
+  filter = local.vault_uses_rbac
+
   enforce {
-    condition     = core::try(attrs.expiration_date, null) != null && core::try(core::regex("\\S", core::try(attrs.expiration_date, "")), null) != null
-    error_message = "Key Vault secret must have an expiration date set (expiration_date must be a non-empty, non-whitespace value)."
+    condition     = local.has_expiration
+    error_message = "Key Vault secret in a vault using Azure RBAC must have a non-empty expiration_date set; by default secrets never expire."
   }
 }
