@@ -4,11 +4,32 @@ policytest {
   targets = ["firewall-rule-delete-alert.policy.hcl"]
 }
 
-resource "azurerm_monitor_activity_log_alert" "compliant_delete_fw_rule" {
+resource "azurerm_mssql_server" "pass_server_with_alert" {
   attrs = {
+    name                = "sqlsrv1"
+    resource_group_name = "sql-rg"
+    location            = "eastus"
+    version             = "12.0"
+    administrator_login = "sqladmin"
+    minimum_tls_version = "1.2"
+  }
+}
+
+resource "azurerm_mssql_firewall_rule" "pass_firewall_rule_with_alert" {
+  attrs = {
+    name             = "allow-office"
+    server_id        = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sql-rg/providers/Microsoft.Sql/servers/sqlsrv1"
+    start_ip_address = "203.0.113.10"
+    end_ip_address   = "203.0.113.20"
+  }
+}
+
+resource "azurerm_monitor_activity_log_alert" "compliant_alert" {
+  skip = true
+  attrs = {
+    name                = "sql-fw-rule-delete-alert"
     location            = "global"
-    name                = "delete-sql-fw-rule-alert"
-    resource_group_name = "rg-monitoring"
+    resource_group_name = "monitoring-rg"
     scopes              = ["/subscriptions/00000000-0000-0000-0000-000000000000"]
     enabled             = true
     criteria = [{
@@ -16,42 +37,28 @@ resource "azurerm_monitor_activity_log_alert" "compliant_delete_fw_rule" {
       operation_name = "Microsoft.Sql/servers/firewallRules/delete"
     }]
     action = [{
-      action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-monitoring/providers/Microsoft.Insights/actionGroups/ag-notify"
+      action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/monitoring-rg/providers/Microsoft.Insights/actionGroups/ag1"
     }]
   }
 }
 
-resource "azurerm_monitor_activity_log_alert" "compliant_matches_official_remediation" {
+resource "azurerm_monitor_activity_log_alert" "compliant_alert_with_filters" {
+  skip = true
   attrs = {
+    name                = "sql-fw-rule-delete-alert-filtered"
     location            = "global"
-    name                = "delete-sql-fw-rule-remediation"
-    resource_group_name = "rg-monitoring"
+    resource_group_name = "monitoring-rg"
     scopes              = ["/subscriptions/00000000-0000-0000-0000-000000000000"]
     enabled             = true
     criteria = [{
       category       = "Administrative"
       operation_name = "Microsoft.Sql/servers/firewallRules/delete"
       level          = "Verbose"
+      status         = "Succeeded"
+      caller         = "user@example.com"
     }]
     action = [{
-      action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-monitoring/providers/Microsoft.Insights/actionGroups/ag-notify"
-    }]
-  }
-}
-
-resource "azurerm_monitor_activity_log_alert" "unrelated_but_ok" {
-  attrs = {
-    location            = "global"
-    name                = "delete-sql-db-alert"
-    resource_group_name = "rg-monitoring"
-    scopes              = ["/subscriptions/00000000-0000-0000-0000-000000000000"]
-    enabled             = true
-    criteria = [{
-      category       = "Administrative"
-      operation_name = "Microsoft.Sql/servers/databases/delete"
-    }]
-    action = [{
-      action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-monitoring/providers/Microsoft.Insights/actionGroups/ag-notify"
+      action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/monitoring-rg/providers/Microsoft.Insights/actionGroups/ag1"
     }]
   }
 }
