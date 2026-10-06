@@ -83,6 +83,129 @@ resource "azuread_conditional_access_policy" "pass_mfa_all_users" {
   }
 }
 
+resource "azuread_conditional_access_policy" "pass_null_client_applications_and_user_actions" {
+  attrs = {
+    display_name = "pass-null-client-applications-and-user-actions"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      client_applications = null
+      applications = [{
+        included_applications = ["All"]
+        included_user_actions = null
+      }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
+resource "azuread_conditional_access_policy" "pass_empty_client_applications_and_user_actions" {
+  attrs = {
+    display_name = "pass-empty-client-applications-and-user-actions"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      client_applications = []
+      applications = [{
+        included_applications = ["All"]
+        included_user_actions = []
+      }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
+resource "azuread_conditional_access_policy" "fail_client_application_selection" {
+  expect_failure = true
+  attrs = {
+    display_name = "fail-client-application-selection"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      client_applications = [{
+        included_service_principals = ["11111111-1111-1111-1111-111111111111"]
+      }]
+      applications = [{ included_applications = ["All"] }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
+resource "azuread_conditional_access_policy" "fail_client_application_filter" {
+  expect_failure = true
+  attrs = {
+    display_name = "fail-client-application-filter"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      client_applications = [{
+        included_service_principals = ["ServicePrincipalsInMyTenant"]
+        filter = [{
+          mode = "exclude"
+          rule = "CustomSecurityAttribute.Engineering_Project -eq \"Baker\""
+        }]
+      }]
+      applications = [{ included_applications = ["All"] }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
+resource "azuread_conditional_access_policy" "fail_user_action_only" {
+  expect_failure = true
+  attrs = {
+    display_name = "fail-user-action-only"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      applications = [{
+        included_user_actions = ["urn:user:registersecurityinfo"]
+      }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
+resource "azuread_conditional_access_policy" "fail_user_actions_with_all_applications" {
+  expect_failure = true
+  attrs = {
+    display_name = "fail-user-actions-with-all-applications"
+    state = "enabled"
+    conditions = [{
+      client_app_types = ["all"]
+      applications = [{
+        included_applications = ["All"]
+        included_user_actions = ["urn:user:registerdevice"]
+      }]
+      users = [{ included_users = ["All"] }]
+    }]
+    grant_controls = [{
+      operator = "OR"
+      built_in_controls = ["mfa"]
+    }]
+  }
+}
+
 resource "azuread_conditional_access_policy" "pass_mfa_and_compliant_device" {
   attrs = {
   display_name = "pass-mfa-and-compliant-device"

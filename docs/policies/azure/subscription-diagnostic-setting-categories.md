@@ -10,6 +10,8 @@ This control evaluates subscription-targeted `azurerm_monitor_diagnostic_setting
 
 Target matching ignores case, surrounding whitespace, and a trailing slash. The category check applies to subscription-targeted settings. An `audit` category group alone is insufficient.
 
+**Enforcement note:** This policy validates categories only on declared subscription diagnostic-setting resources. It cannot detect a missing diagnostic-setting resource or verify categories configured outside this Terraform configuration.
+
 Requires `hashicorp/azurerm >= 4.0.0, < 6.0.0`. Enforcement defaults to `advisory` and is configurable through `subscription-diagnostic-setting-categories-enforcement-level`.
 
 This rule is covered by the [subscription-diagnostic-setting-categories](../../../policies/azure/monitor/subscription-diagnostic-setting-categories.policy.hcl) policy.

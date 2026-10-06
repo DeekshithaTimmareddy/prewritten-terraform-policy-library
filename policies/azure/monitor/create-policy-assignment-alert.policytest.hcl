@@ -260,9 +260,26 @@ resource "azurerm_monitor_activity_log_alert" "pass_subscription_scope_mixed_cas
   }
 }
 
-resource "azurerm_monitor_activity_log_alert" "pass_null_scopes" {
+resource "azurerm_monitor_activity_log_alert" "fail_empty_scopes" {
+  expect_failure = true
   attrs = {
-  name                = "pass-null-scopes"
+    name                = "fail-empty-scopes"
+    resource_group_name = "rg-alerts"
+    location            = "global"
+    scopes              = []
+    enabled             = true
+    action              = [{ action_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-alerts/providers/Microsoft.Insights/actionGroups/ag-security" }]
+    criteria = [{
+      category       = "Administrative"
+      operation_name = "Microsoft.Authorization/policyAssignments/write"
+    }]
+  }
+}
+
+resource "azurerm_monitor_activity_log_alert" "fail_null_scopes" {
+  expect_failure = true
+  attrs = {
+  name                = "fail-null-scopes"
   resource_group_name = "rg-alerts"
   location            = "global"
   scopes              = null

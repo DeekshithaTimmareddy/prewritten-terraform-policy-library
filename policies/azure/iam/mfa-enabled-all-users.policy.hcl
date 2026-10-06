@@ -56,6 +56,8 @@ resource_policy "azuread_conditional_access_policy" "mfa_required_all_users" {
       core::length(core::try([for l in attrs.conditions[0].locations : l], [])) == 0 &&
       core::length(core::try([for x in attrs.conditions[0].platforms : x], [])) == 0 &&
       core::length(core::try([for d in attrs.conditions[0].devices : d], [])) == 0 &&
+      core::length(core::try([for c in attrs.conditions[0].client_applications : c], [])) == 0 &&
+      core::length(core::try([for a in attrs.conditions[0].applications[0].included_user_actions : a], [])) == 0 &&
       core::length(core::try([for r in attrs.conditions[0].sign_in_risk_levels : r], [])) == 0 &&
       core::length(core::try([for r in attrs.conditions[0].user_risk_levels : r], [])) == 0 &&
       core::length(core::try([for r in attrs.conditions[0].service_principal_risk_levels : r], [])) == 0 &&
@@ -80,6 +82,6 @@ resource_policy "azuread_conditional_access_policy" "mfa_required_all_users" {
 
   enforce {
     condition     = local.no_grant_bypass && local.no_user_exclusions && local.all_apps && local.all_client_apps && local.no_narrowing
-    error_message = "A Conditional Access policy that requires MFA for All users must be enabled, apply to All cloud apps with no exclusions or application filter, use client app types 'all', have no user/group/role/guest exclusions, no location/platform/device/risk/auth-flow conditions, and must not use an OR grant that lets another control, terms of use or a custom factor replace MFA."
+    error_message = "A Conditional Access policy that requires MFA for All users must be enabled, apply to All cloud apps with no exclusions or application filter, use client app types 'all', have no user/group/role/guest exclusions, no location/platform/device/client-application/user-action/risk/auth-flow conditions, and must not use an OR grant that lets another control, terms of use or a custom factor replace MFA."
   }
 }

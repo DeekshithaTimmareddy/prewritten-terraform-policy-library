@@ -17,44 +17,50 @@ input "user-access-administrator-restricted-enforcement-level" {
 }
 
 resource_policy "azurerm_role_assignment" "user_access_administrator_restricted" {
+  filter = core::try(core::trimspace(attrs.scope), "") == "/"
+
   enforcement_level = input.user-access-administrator-restricted-enforcement-level
 
   locals {
     role_name = core::try(core::lower(core::trimspace(attrs.role_definition_name)), "")
     role_id   = core::try(core::lower(core::trim(attrs.role_definition_id, "/ ")), "")
-    is_uaa = local.role_id != "" ? core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9") : local.role_name == "user access administrator"
+    is_uaa    = local.role_id != "" ? core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9") : local.role_name == "user access administrator"
   }
 
   enforce {
     condition     = !local.is_uaa
-    error_message = "The 'User Access Administrator' role must not be assigned through a role assignment at any scope."
+    error_message = "The 'User Access Administrator' role must not be assigned through a role assignment at root scope '/'."
   }
 }
 
 resource_policy "azurerm_pim_active_role_assignment" "user_access_administrator_restricted" {
+  filter = core::try(core::trimspace(attrs.scope), "") == "/"
+
   enforcement_level = input.user-access-administrator-restricted-enforcement-level
 
   locals {
-    role_id   = core::try(core::lower(core::trim(attrs.role_definition_id, "/ ")), "")
-    is_uaa    = core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
+    role_id = core::try(core::lower(core::trim(attrs.role_definition_id, "/ ")), "")
+    is_uaa  = core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
   }
 
   enforce {
     condition     = !local.is_uaa
-    error_message = "The 'User Access Administrator' role must not be assigned through a PIM active role assignment at any scope."
+    error_message = "The 'User Access Administrator' role must not be assigned through a PIM active role assignment at root scope '/'."
   }
 }
 
 resource_policy "azurerm_pim_eligible_role_assignment" "user_access_administrator_restricted" {
+  filter = core::try(core::trimspace(attrs.scope), "") == "/"
+
   enforcement_level = input.user-access-administrator-restricted-enforcement-level
 
   locals {
-    role_id   = core::try(core::lower(core::trim(attrs.role_definition_id, "/ ")), "")
-    is_uaa    = core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
+    role_id = core::try(core::lower(core::trim(attrs.role_definition_id, "/ ")), "")
+    is_uaa  = core::endswith(local.role_id, "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
   }
 
   enforce {
     condition     = !local.is_uaa
-    error_message = "The 'User Access Administrator' role must not be assigned through a PIM eligible role assignment at any scope."
+    error_message = "The 'User Access Administrator' role must not be assigned through a PIM eligible role assignment at root scope '/'."
   }
 }

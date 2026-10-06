@@ -10,6 +10,8 @@ This control evaluates `azurerm_role_definition` resources. It rejects custom ro
 
 The wildcard-action check applies to each permissions block, including when `not_actions` is present. Resource-group-scoped roles and roles with narrower actions are accepted by this control.
 
+**Scope note:** CIS 5.4 targets custom subscription administrator roles. This implementation deliberately applies the same wildcard-action restriction to management-group and root assignable scopes as well, making its enforcement broader than the CIS subscription-scoped control.
+
 Requires `hashicorp/azurerm >= 4.0.0, < 6.0.0`. Enforcement defaults to `advisory` and is configurable through `no-custom-subscription-admin-roles-enforcement-level`.
 
 This rule is covered by the [no-custom-subscription-admin-roles](../../../policies/azure/iam/no-custom-subscription-admin-roles.policy.hcl) policy.

@@ -10,6 +10,8 @@ This control evaluates `azurerm_monitor_diagnostic_setting` resources whose `tar
 
 Target matching ignores case, surrounding whitespace, and a trailing slash. The enabled-log check applies to subscription-targeted settings; resource-group and individual-resource targets are excluded by the filter.
 
+**Enforcement note:** This policy validates only declared subscription diagnostic-setting resources. It cannot detect a subscription with no diagnostic-setting resource in the Terraform plan or verify settings managed outside this configuration.
+
 Requires `hashicorp/azurerm >= 4.0.0, < 6.0.0`. Enforcement defaults to `advisory` and is configurable through `subscription-diagnostic-setting-exists-enforcement-level`.
 
 This rule is covered by the [subscription-diagnostic-setting-exists](../../../policies/azure/monitor/subscription-diagnostic-setting-exists.policy.hcl) policy.

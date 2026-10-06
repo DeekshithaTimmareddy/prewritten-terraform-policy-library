@@ -29,7 +29,7 @@ resource_policy "azurerm_monitor_activity_log_alert" "create_update_security_sol
     is_administrative = core::try(core::lower(core::trimspace(local.criteria.category)), "") == "administrative"
 
     known_scopes        = [for s in core::try([for x in attrs.scopes : x], []) : core::lower(core::trimsuffix(core::trimspace(s), "/")) if s != null]
-    subscription_scoped = core::length(local.known_scopes) == 0 || core::length([for s in local.known_scopes : s if core::try(core::regex("^/subscriptions/[^/]+$", s), null) != null]) > 0
+    subscription_scoped = core::length([for s in local.known_scopes : s if core::try(core::regex("^/subscriptions/[^/]+$", s), null) != null]) > 0
 
     has_action_group = core::length([
       for a in core::try([for x in attrs.action : x], []) : a
