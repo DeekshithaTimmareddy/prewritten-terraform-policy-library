@@ -78,7 +78,8 @@ resource "azurerm_application_gateway" "pass_unknown_policy_collection_deferred"
   }
 }
 
-resource "azurerm_application_gateway" "pass_custom_version_unknown_omitted_deferred" {
+resource "azurerm_application_gateway" "fail_custom_version_omitted" {
+  expect_failure = true
   attrs = {
     ssl_policy = [{
       policy_type = "Custom"
@@ -86,7 +87,8 @@ resource "azurerm_application_gateway" "pass_custom_version_unknown_omitted_defe
   }
 }
 
-resource "azurerm_application_gateway" "pass_predefined_name_unknown_omitted_deferred" {
+resource "azurerm_application_gateway" "fail_predefined_name_omitted" {
+  expect_failure = true
   attrs = {
     ssl_policy = [{
       policy_type = "Predefined"
@@ -160,7 +162,8 @@ resource "azurerm_application_gateway" "pass_unknown_profiles_deferred" {
   }
 }
 
-resource "azurerm_application_gateway" "pass_profile_unknown_version_deferred" {
+resource "azurerm_application_gateway" "fail_profile_version_omitted" {
+  expect_failure = true
   attrs = {
     ssl_profile = [{
       name = "profile"

@@ -194,7 +194,8 @@ resource "azurerm_virtual_network" "pass_inline_two_protected" {
   }
 }
 
-resource "azurerm_virtual_network" "pass_inline_unknown_nsg_deferred" {
+resource "azurerm_virtual_network" "fail_inline_nsg_omitted" {
+  expect_failure = true
   attrs = {
     subnet = [{
       name = "app"

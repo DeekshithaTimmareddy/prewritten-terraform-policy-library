@@ -39,7 +39,8 @@ resource "azurerm_virtual_network_gateway" "pass_auth_null_deferred" {
   }
 }
 
-resource "azurerm_virtual_network_gateway" "pass_auth_unknown_element_deferred" {
+resource "azurerm_virtual_network_gateway" "fail_null_auth_element_with_missing_aad_settings" {
+  expect_failure = true
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
@@ -48,7 +49,8 @@ resource "azurerm_virtual_network_gateway" "pass_auth_unknown_element_deferred" 
   }
 }
 
-resource "azurerm_virtual_network_gateway" "pass_aad_and_unknown_element_deferred" {
+resource "azurerm_virtual_network_gateway" "fail_aad_and_null_element_with_missing_aad_settings" {
+  expect_failure = true
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
@@ -70,7 +72,8 @@ resource "azurerm_virtual_network_gateway" "fail_aad_settings_known_null" {
   }
 }
 
-resource "azurerm_virtual_network_gateway" "pass_aad_settings_absent_deferred" {
+resource "azurerm_virtual_network_gateway" "fail_aad_settings_omitted" {
+  expect_failure = true
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
@@ -79,7 +82,8 @@ resource "azurerm_virtual_network_gateway" "pass_aad_settings_absent_deferred" {
   }
 }
 
-resource "azurerm_virtual_network_gateway" "pass_audience_unknown_omitted_deferred" {
+resource "azurerm_virtual_network_gateway" "fail_audience_omitted" {
+  expect_failure = true
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
@@ -145,6 +149,9 @@ resource "azurerm_virtual_network_gateway" "pass_empty_alternative_settings" {
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
+      aad_tenant            = "tenant"
+      aad_audience          = "audience"
+      aad_issuer            = "issuer"
       vpn_auth_types        = ["AAD"]
       root_certificate      = []
       radius_server         = []
@@ -157,6 +164,9 @@ resource "azurerm_virtual_network_gateway" "pass_null_alternative_settings_defer
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
+      aad_tenant            = "tenant"
+      aad_audience          = "audience"
+      aad_issuer            = "issuer"
       vpn_auth_types        = ["AAD"]
       root_certificate      = null
       radius_server         = null
@@ -169,6 +179,9 @@ resource "azurerm_virtual_network_gateway" "pass_revoked_certificate_not_authent
   attrs = {
     type = "Vpn"
     vpn_client_configuration = [{
+      aad_tenant     = "tenant"
+      aad_audience   = "audience"
+      aad_issuer     = "issuer"
       vpn_auth_types = ["AAD"]
       revoked_certificate = [{
         name       = "revoked"

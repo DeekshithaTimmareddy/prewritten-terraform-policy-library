@@ -14,6 +14,8 @@ Standalone subnets must have a resolved `network_security_group_id`, a matching 
 
 **Enforcement note:** an association with an unresolved subnet ID does not establish protection for a different, known subnet ID. Unresolved subnet IDs and write-only assignments require resolved-value verification. A deferred or unknown result in a speculative plan is not proof that the subnet is protected, and an NSG association alone does not validate the NSG's rules.
 
+An omitted `security_group` on a declared inline subnet is null in schema-aware local tests and fails; it is not a computed-unknown fixture.
+
 Enforcement defaults to `advisory` and can be configured with the `subnet-nsg-associated-enforcement-level` input.
 
 This rule is covered by the [subnet-nsg-associated](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/network/subnet-nsg-associated.policy.hcl) policy.
@@ -124,9 +126,9 @@ trace:
 	running
 	# resource.azurerm_virtual_network.pass_inline_two_protected...
 	pass
-	# resource.azurerm_virtual_network.pass_inline_unknown_nsg_deferred...
+	# resource.azurerm_virtual_network.fail_inline_nsg_omitted...
 	running
-	# resource.azurerm_virtual_network.pass_inline_unknown_nsg_deferred...
+	# resource.azurerm_virtual_network.fail_inline_nsg_omitted...
 	pass
 	# resource.azurerm_virtual_network.pass_inline_unknown_collection_deferred...
 	running

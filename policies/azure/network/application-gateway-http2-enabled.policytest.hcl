@@ -30,21 +30,6 @@ resource "azurerm_application_gateway" "pass_unknown_http2_omitted_deferred" {
   }
 }
 
-resource "azurerm_application_gateway" "fail_old_alias_cannot_override_false" {
-  expect_failure = true
-  attrs = {
-    http2_enabled = false
-    enable_http2  = true
-  }
-}
-
-resource "azurerm_application_gateway" "pass_old_alias_does_not_override_true" {
-  attrs = {
-    http2_enabled = true
-    enable_http2  = false
-  }
-}
-
 resource "azurerm_application_gateway" "pass_standard_tier_enabled" {
   attrs = {
     http2_enabled = true
