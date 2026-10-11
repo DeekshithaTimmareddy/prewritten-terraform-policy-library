@@ -7,7 +7,7 @@ A library of prewritten terraform policies for multiple cloud providers.
 | Provider | Services covered | Policies |
 | -------- | ----------- | -------- |
 | AWS | 58 services | 348 |
-| Azure | 3 services | 16 |
+| Azure | 4 services | 33 |
 | GCP | 3 services | 17 |
 
 Additional providers will be added in future releases.
@@ -21,6 +21,19 @@ The AWS policies in this library implement controls from the [AWS Foundational S
 The Azure policies in this library implement a subset of controls from the [CIS Azure Foundations Benchmark](https://www.cisecurity.org/benchmark/azure). The CIS Azure Benchmark is a set of security configuration best practices for Microsoft Azure developed by the Center for Internet Security (CIS).
 
 > **Note:** Only a subset of the CIS Azure Benchmark controls are currently implemented as policies in this library — not the full benchmark. Coverage will expand in future releases.
+
+Azure policies use HashiCorp-managed providers. Control 8.1.13 validates
+`email` on a default `azurerm_security_center_contact`. Controls 8.1.12,
+8.1.14, and 8.1.15 are not implemented because AzureRM does not expose the
+required Owner-role selection, minimum alert severity, or attack-path risk
+thresholds. The existing notification booleans do not prove these settings.
+
+Storage controls 9.3.1.1 and 9.3.1.2 are not implemented: AzureRM does not
+expose the storage account key-rotation reminder policy or evidence of
+successful recent access-key regeneration. A rotation schedule is not proof
+of recent rotation; verify successful events and both keys' last-rotated
+dates in Azure. Unknown resource IDs and external WAF-policy references in
+speculative plans must not be reported as fully verified compliance.
 
 ## GCP — CIS GCP Foundations Benchmark
 
@@ -39,6 +52,7 @@ policies/
 │   └── workspaces/
 ├── azure/
 │   ├── iam/
+│   ├── monitor/
 │   ├── network/
 │   └── storage/
 └── gcp/
@@ -83,6 +97,12 @@ tfpolicy test policies/gcp/iam
 ```
 
 ## Documentation
+
+Each per-policy test file should declare a `policytest` block with `targets`
+set to its matching `.policy.hcl` filename. This keeps unit-test fixtures scoped
+to the intended policy when `make tests` collects all policies for a provider.
+Without explicit targets, unrelated policies can cause false failures or mask
+failures in cases using `expect_failure`.
 
 Per-policy documentation lives under `docs/policies/`. Each file includes:
 
