@@ -10,6 +10,8 @@ This control checks Cloud Storage buckets used as destinations by project, folde
 
 The policy cannot correlate sinks or buckets managed outside the plan, nor resolve unknown sink destinations at plan time. It requires the destination bucket to be present as a `google_storage_bucket` resource in the plan to evaluate its retention settings.
 
+This policy requires Google provider `>= 7.0.0, < 8.0.0`. Version 7.0.0 changed `retention_policy.retention_period` from a number to a string. The policy and its fixtures use that schema; Google 6.x is not supported by this policy. See the [Google 7.0.0 upgrade guide](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/version_7_upgrade).
+
 This rule is covered by the [2-4-log-export-bucket-lock](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/gcp/logging/2-4-log-export-bucket-lock.policy.hcl) policy.
 
 ## Policy Results
