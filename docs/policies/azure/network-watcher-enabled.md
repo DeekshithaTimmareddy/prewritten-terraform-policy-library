@@ -6,7 +6,9 @@
 
 ## Description
 
-CIS Azure Foundations v6.0.0 control 7.6 requires a Terraform-managed Network Watcher for each known region used by a declared virtual network. Locations are normalized for case and spaces. Known subscription IDs must match; unknown subscription IDs defer that comparison.
+**Important limitation:** Azure normally creates a regional Network Watcher automatically in `NetworkWatcherRG` when a virtual network is created. These watchers are often not managed by Terraform and are invisible to this policy. A declared VNet with a known region will fail when its corresponding watcher is absent from the Terraform plan, even if that watcher already exists in Azure. Declare and import the existing watcher before relying on this check; a failure does not prove that Azure lacks a watcher.
+
+CIS Azure Foundations v6.0.0 control 7.6 checks regional Network Watcher coverage. This policy requires a Terraform-visible watcher for each known region used by a declared virtual network. Locations are normalized for case and spaces. Known subscription IDs must match; unknown subscription IDs defer that comparison.
 
 Unknown VNet regions defer evaluation. An unknown watcher region does not satisfy a known VNet region, and known blank watcher locations fail.
 

@@ -1,4 +1,4 @@
-# Application Insights Workspace Configuration
+# Ensure Application Insights are Configured
 
 | Provider | Category               |
 | -------- | ---------------------- |
@@ -8,11 +8,11 @@
 
 CIS Azure Foundations v6.0.0 control 6.1.3.1 evaluates the workspace reference of declared `azurerm_application_insights` resources. Known workspace IDs must be nonblank Log Analytics workspace ARM resource IDs.
 
-Missing, null, or unknown workspace IDs defer evaluation because AzureRM can compute this attribute. The policy does not impose additional retention, sampling, application-type, or networking requirements.
+Missing, null, blank, or whitespace-only workspace IDs fail this check. Configure an explicit Log Analytics workspace ARM resource ID. A genuinely unknown provider-computed value in a speculative plan is not proof of compliance and needs evaluation after resolution. The policy does not impose additional retention, sampling, application-type, or networking requirements.
 
 **Coverage:** This check cannot detect missing Application Insights components or prove that applications are instrumented and sending telemetry.
 
-**HCP verification:** A workspace-linked component explicitly passed after apply ([compliant run](https://app.terraform.io/app/nagateja-test-org/azure_testing/runs/run-97KBxnb3WATEFXKq)). With AzureRM 4.81.0, omitting `workspace_id` produced an unknown policy result ([omitted-workspace run](https://app.terraform.io/app/nagateja-test-org/azure_testing/runs/run-RBt2ZQYG3ezESqq7)), while an invalid workspace resource ID was rejected by provider validation before policy evaluation. No HCP negative policy result is claimed. Azure [automatically creates a managed workspace](https://learn.microsoft.com/en-us/azure/azure-monitor/app/managed-workspaces) when none is specified, so omission alone is not proof of noncompliance.
+**Earlier HCP verification:** Before the explicit-workspace requirement was added, a workspace-linked component passed after apply ([compliant run](https://app.terraform.io/app/nagateja-test-org/azure_testing/runs/run-97KBxnb3WATEFXKq)), and omitting `workspace_id` produced an unknown policy result ([omitted-workspace run](https://app.terraform.io/app/nagateja-test-org/azure_testing/runs/run-RBt2ZQYG3ezESqq7)). These runs do not verify the updated negative behavior. Although Azure can [automatically create a managed workspace](https://learn.microsoft.com/en-us/azure/azure-monitor/app/managed-workspaces), this policy requires an explicit reference rather than relying on that service-side behavior.
 
 Requires `hashicorp/azurerm >= 4.0.0, < 6.0.0`. Enforcement defaults to `advisory`, configurable through `application-insights-configured-enforcement-level`.
 
@@ -32,13 +32,13 @@ trace:
 	running
 	# resource.azurerm_application_insights.pass_workspace_other...
 	pass
-	# resource.azurerm_application_insights.pass_workspace_new_in_plan...
+	# resource.azurerm_application_insights.fail_workspace_omitted...
 	running
-	# resource.azurerm_application_insights.pass_workspace_new_in_plan...
+	# resource.azurerm_application_insights.fail_workspace_omitted...
 	pass
-	# resource.azurerm_application_insights.pass_workspace_null_null_or_omitted...
+	# resource.azurerm_application_insights.fail_workspace_null...
 	running
-	# resource.azurerm_application_insights.pass_workspace_null_null_or_omitted...
+	# resource.azurerm_application_insights.fail_workspace_null...
 	pass
 	# resource.azurerm_application_insights.pass_workspace_case_and_whitespace...
 	running

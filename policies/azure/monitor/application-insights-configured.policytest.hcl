@@ -18,7 +18,8 @@ resource "azurerm_application_insights" "pass_workspace_other" {
   }
 }
 
-resource "azurerm_application_insights" "pass_workspace_new_in_plan" {
+resource "azurerm_application_insights" "fail_workspace_omitted" {
+  expect_failure = true
   attrs = {
     application_type    = "web"
     name                = "appi-new-workspace"
@@ -27,7 +28,8 @@ resource "azurerm_application_insights" "pass_workspace_new_in_plan" {
   }
 }
 
-resource "azurerm_application_insights" "pass_workspace_null_null_or_omitted" {
+resource "azurerm_application_insights" "fail_workspace_null" {
+  expect_failure = true
   attrs = {
     application_type = "web"
     workspace_id     = null

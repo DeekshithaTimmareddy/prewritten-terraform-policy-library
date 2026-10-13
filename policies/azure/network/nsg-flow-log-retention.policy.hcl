@@ -27,7 +27,8 @@ resource_policy "azurerm_network_watcher_flow_log" "nsg_flow_log_retention" {
   locals {
     enabled = core::try(attrs.enabled, null)
     days    = core::try(attrs.retention_policy[0].days, null)
-    days_ok = local.days == null ? true : (local.days == 0 || local.days >= 90)
+    retention_enabled = core::try(attrs.retention_policy[0].enabled, null)
+    days_ok = local.retention_enabled == false ? true : (local.days == null ? true : (local.days == 0 || local.days >= 90))
   }
 
   enforce {
@@ -37,6 +38,6 @@ resource_policy "azurerm_network_watcher_flow_log" "nsg_flow_log_retention" {
 
   enforce {
     condition     = local.days_ok
-    error_message = "The NSG flow log retention must be 0 days (indefinite) or at least 90 days."
+    error_message = "The NSG flow log must disable retention for indefinite storage or retain data for 0 days (indefinite) or at least 90 days."
   }
 }

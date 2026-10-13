@@ -69,8 +69,7 @@ resource "azurerm_network_watcher_flow_log" "fail_vnet_days_1" {
   }
 }
 
-resource "azurerm_network_watcher_flow_log" "fail_vnet_days_30_policy_disabled" {
-  expect_failure = true
+resource "azurerm_network_watcher_flow_log" "pass_vnet_days_30_policy_disabled" {
   attrs = {
     name                 = "fl-fail-vnet-days-30-policy-disabled"
     enabled              = true
@@ -109,7 +108,8 @@ resource "azurerm_network_watcher_flow_log" "pass_indefinite_policy_disabled" {
   }
 }
 
-resource "azurerm_network_watcher_flow_log" "pass_disabled_log_retention_90" {
+resource "azurerm_network_watcher_flow_log" "fail_disabled_log_retention_90" {
+  expect_failure = true
   attrs = {
     target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/virtualNetworks/vnet-test"
     enabled            = false
@@ -152,6 +152,15 @@ resource "azurerm_network_watcher_flow_log" "fail_disabled_log_short_retention" 
     target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/virtualNetworks/vnet-test"
     enabled            = false
     retention_policy   = [{ enabled = true, days = 30 }]
+  }
+}
+
+resource "azurerm_network_watcher_flow_log" "fail_logging_and_retention_disabled" {
+  expect_failure = true
+  attrs = {
+    target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/virtualNetworks/vnet-test"
+    enabled            = false
+    retention_policy   = [{ enabled = false, days = 30 }]
   }
 }
 

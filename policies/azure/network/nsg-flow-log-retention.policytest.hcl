@@ -158,8 +158,7 @@ resource "azurerm_network_watcher_flow_log" "fail_negative_days" {
   }
 }
 
-resource "azurerm_network_watcher_flow_log" "fail_short_days_retention_disabled" {
-  expect_failure = true
+resource "azurerm_network_watcher_flow_log" "pass_short_days_retention_disabled" {
   attrs = {
     target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/networkSecurityGroups/nsg-test"
     enabled            = true
@@ -173,6 +172,15 @@ resource "azurerm_network_watcher_flow_log" "fail_disabled_null_or_omitted_days"
     target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/networkSecurityGroups/nsg-test"
     enabled            = false
     retention_policy   = [{ enabled = true, days = null }]
+  }
+}
+
+resource "azurerm_network_watcher_flow_log" "fail_logging_and_retention_disabled" {
+  expect_failure = true
+  attrs = {
+    target_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-net/providers/Microsoft.Network/networkSecurityGroups/nsg-test"
+    enabled            = false
+    retention_policy   = [{ enabled = false, days = 30 }]
   }
 }
 

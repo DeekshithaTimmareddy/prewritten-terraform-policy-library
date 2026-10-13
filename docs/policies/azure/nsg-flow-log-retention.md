@@ -6,9 +6,11 @@
 
 ## Description
 
-CIS Azure Foundations v6.0.0 control 7.5 evaluates flow logs with known Network Security Group root-resource targets. Logging must not be explicitly disabled, and known retention days must be zero (unlimited) or at least 90.
+**Retirement notice:** Creating new NSG flow logs has not been supported since June 30, 2025, and NSG flow logs will be retired on September 30, 2027. This policy applies only to existing NSG flow logs managed or imported into Terraform. Migrate to virtual network flow logs and use [vnet-flow-log-retention](vnet-flow-log-retention.md), covering CIS control 7.8, as the replacement. See the [Azure NSG flow-log overview](https://learn.microsoft.com/en-us/azure/network-watcher/nsg-flow-logs-overview).
 
-Unknown target IDs and retention values defer evaluation. This policy does not add an independent requirement for the retention-policy enabled flag.
+CIS Azure Foundations v6.0.0 control 7.5 evaluates flow logs with known Network Security Group root-resource targets. Logging must not be explicitly disabled. When retention is active, known retention days must be zero (unlimited) or at least 90.
+
+Unknown target IDs and retention values defer evaluation. An explicitly disabled retention policy keeps logs indefinitely, so `retention_policy.enabled = false` passes regardless of its days value. This does not permit the flow log itself to be disabled.
 
 **Coverage:** Missing flow logs are not detected. New NSG flow-log creation is no longer supported; this check is for existing logs managed or imported into Terraform. AzureRM 5.8.0 rejected the reviewed creation fixture during planning, so no live create/destroy lifecycle was claimed for this control.
 
@@ -84,9 +86,9 @@ trace:
 	running
 	# resource.azurerm_network_watcher_flow_log.fail_negative_days...
 	pass
-	# resource.azurerm_network_watcher_flow_log.fail_short_days_retention_disabled...
+	# resource.azurerm_network_watcher_flow_log.pass_short_days_retention_disabled...
 	running
-	# resource.azurerm_network_watcher_flow_log.fail_short_days_retention_disabled...
+	# resource.azurerm_network_watcher_flow_log.pass_short_days_retention_disabled...
 	pass
 	# resource.azurerm_network_watcher_flow_log.fail_disabled_null_or_omitted_days...
 	running

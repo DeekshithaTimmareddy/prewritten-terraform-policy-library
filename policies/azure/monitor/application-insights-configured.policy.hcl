@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure that Application Insights Uses a Log Analytics Workspace
+# Ensure Application Insights are Configured
 
 policy {
   required_providers {
@@ -20,8 +20,8 @@ resource_policy "azurerm_application_insights" "application_insights_workspace_c
   enforcement_level = input.application-insights-configured-enforcement-level
 
   locals {
-    workspace_id = core::try(core::lower(core::trimspace(attrs.workspace_id)), null)
-    workspace_reference_valid = local.workspace_id == null ? true : core::try(
+    workspace_id = core::try(core::lower(core::trimspace(attrs.workspace_id)), "")
+    workspace_reference_valid = core::try(
       core::regex("^/subscriptions/[^/]+/resourcegroups/[^/]+/providers/microsoft\\.operationalinsights/workspaces/[^/]+$", local.workspace_id),
       null
     ) != null
