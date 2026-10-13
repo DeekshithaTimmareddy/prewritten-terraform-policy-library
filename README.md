@@ -8,7 +8,7 @@ A library of prewritten terraform policies for multiple cloud providers.
 | -------- | ----------- | -------- |
 | AWS | 58 services | 348 |
 | Azure | 3 services | 16 |
-| GCP | 3 services | 17 |
+| GCP | 4 services | 39 |
 
 Additional providers will be added in future releases.
 
@@ -43,6 +43,7 @@ policies/
 │   └── storage/
 └── gcp/
     ├── iam/
+    ├── logging/
     ├── network/
     └── compute/
 docs/
