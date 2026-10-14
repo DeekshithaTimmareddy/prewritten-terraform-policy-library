@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.0.0, < 6.0.0"
+      version = ">= 5.0.0, < 6.0.0"
     }
   }
 }
@@ -47,6 +47,8 @@ resource_policy "azurerm_subnet" "subnet_nsg_associated" {
       if local.id == null
     ]
   }
+
+  filter = !core::contains(["gatewaysubnet", "azurefirewallsubnet", "azurefirewallmanagementsubnet", "routeserversubnet"], core::try(core::lower(attrs.name), ""))
 
   enforcement_level = input.subnet-nsg-associated-enforcement-level
   enforce {
@@ -89,7 +91,8 @@ resource_policy "azurerm_virtual_network" "inline_subnet_nsg_associated" {
     ]
     unprotected_subnets = [
       for s in local.subnets : s.name
-      if s.nsg_id != null && core::try(core::regex(
+      if !core::contains(["gatewaysubnet", "azurefirewallsubnet", "azurefirewallmanagementsubnet", "routeserversubnet"], core::try(core::lower(s.name), "")) &&
+      s.nsg_id != null && core::try(core::regex(
         "^/subscriptions/[^/]+/resourcegroups/[^/]+/providers/microsoft\\.network/networksecuritygroups/[^/]+$", s.nsg_id
       ), null) == null
     ]

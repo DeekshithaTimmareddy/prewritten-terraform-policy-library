@@ -8,11 +8,11 @@
 
 This control implements CIS Azure Foundations Benchmark v6.0.0 control 9.1.2.
 
-This control checks whether Azure storage accounts restrict SMB protocol versions to `SMB3.1.1`. Limiting the supported versions prevents clients from negotiating older SMB protocols.
+This control checks whether storage accounts that support Azure Files (`StorageV2`, `FileStorage`, and `Storage`) restrict SMB protocol versions to `SMB3.1.1`. Blob-only account kinds such as `BlockBlobStorage` are outside this check. Limiting the supported versions prevents clients from negotiating older SMB protocols.
 
 Configure `share_properties.smb.versions` with a nonempty set containing only `SMB3.1.1`. Lists containing SMB 2.1 or SMB 3.0 do not meet the requirement, even when SMB 3.1.1 is also included.
 
-**Enforcement note:** the policy evaluates storage accounts without an account-kind exemption. Missing or empty SMB settings fail because they do not establish an explicit restriction to SMB 3.1.1. This check does not validate channel encryption or authentication settings.
+**Enforcement note:** `StorageV2` accounts must declare the SMB version restriction even when no `azurerm_storage_share` resource is in the plan. Missing or empty SMB settings fail because they do not establish an explicit restriction to SMB 3.1.1. This check does not validate channel encryption or authentication settings.
 
 Enforcement defaults to `advisory` and can be configured with the `smb-protocol-version-311-enforcement-level` input.
 

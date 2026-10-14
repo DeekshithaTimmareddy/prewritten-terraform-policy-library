@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 5.8.0"
+      version = ">= 4.0.0, < 6.0.0"
     }
   }
 }
@@ -30,7 +30,7 @@ resource_policy "azurerm_storage_account" "container_soft_delete_enabled" {
 
   enforcement_level = input.container-soft-delete-enforcement-level
   enforce {
-    condition     = core::length(local.blob_props) > 0 && core::length(local.policies) > 0 && local.days >= 7 && local.days <= 365
-    error_message = "Blob-capable storage accounts must enable container soft delete with a retention period of at least 7 days and no more than 365 days; AzureRM defaults omitted retention days to 7."
+    condition     = core::length(local.blob_props) > 0 && core::length(local.policies) > 0 && local.days >= 7
+    error_message = "Blob-capable storage accounts must enable container soft delete with a retention period of at least 7 days; AzureRM defaults omitted retention days to 7."
   }
 }

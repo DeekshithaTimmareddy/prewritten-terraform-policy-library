@@ -202,19 +202,3 @@ resource "azurerm_storage_account" "fail_days_one" {
     }]
   }
 }
-
-resource "azurerm_storage_account" "fail_days_above_provider_range" {
-  expect_failure = true
-  attrs = {
-    name                     = "faildays366"
-    resource_group_name      = "rg-test"
-    location                 = "eastus"
-    account_tier             = "Standard"
-    account_replication_type = "LRS"
-    blob_properties = [{
-      container_delete_retention_policy = [{
-        days = 366
-      }]
-    }]
-  }
-}

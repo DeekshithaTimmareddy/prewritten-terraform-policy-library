@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["defender-storage-enabled.policy.hcl"]
+  targets = ["defender-storage-on.policy.hcl"]
 }
 
 resource "azurerm_security_center_subscription_pricing" "pass_storage_standard" {

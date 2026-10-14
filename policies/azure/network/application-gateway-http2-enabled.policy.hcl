@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.0.0, < 6.0.0"
+      version = ">= 5.0.0, < 6.0.0"
     }
   }
 }

@@ -14,15 +14,15 @@ The policy evaluates `azurerm_security_center_subscription_pricing` resources wi
 
 **Enforcement note:** this control checks the pricing tier, not a particular subplan or extension. It does not enforce the existence of a pricing resource when the plan contains none. Enabling Defender can incur subscription-level charges.
 
-Enforcement defaults to `advisory` and can be configured with the `defender-storage-enabled-enforcement-level` input.
+Enforcement defaults to `advisory` and can be configured with the `defender-storage-on-enforcement-level` input.
 
-This rule is covered by the [defender-storage-enabled](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/monitor/defender-storage-enabled.policy.hcl) policy.
+This rule is covered by the [defender-storage-on](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/security-center/defender-storage-on.policy.hcl) policy.
 
 ## Policy Results
 
 ```bash
 trace:
-	# defender-storage-enabled.policytest.hcl...
+	# defender-storage-on.policytest.hcl...
 	running
 	# resource.azurerm_security_center_subscription_pricing.pass_storage_standard...
 	running
@@ -60,7 +60,7 @@ trace:
 	running
 	# resource.azurerm_security_center_subscription_pricing.pass_resource_type_null_defaults_free...
 	pass
-	# defender-storage-enabled.policytest.hcl...
+	# defender-storage-on.policytest.hcl...
 	pass
 ```
 

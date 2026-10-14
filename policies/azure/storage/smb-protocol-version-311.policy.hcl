@@ -6,7 +6,7 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 5.8.0"
+      version = ">= 4.0.0, < 6.0.0"
     }
   }
 }
@@ -17,6 +17,8 @@ input "smb-protocol-version-311-enforcement-level" {
 }
 
 resource_policy "azurerm_storage_account" "smb_protocol_version_3_1_1" {
+  filter = core::try(core::contains(["storagev2", "filestorage", "storage"], core::lower(attrs.account_kind)), true)
+
   locals {
     smb_versions_raw = core::try([for v in attrs.share_properties[0].smb[0].versions : v], [])
     smb_versions     = local.smb_versions_raw == null ? [] : local.smb_versions_raw

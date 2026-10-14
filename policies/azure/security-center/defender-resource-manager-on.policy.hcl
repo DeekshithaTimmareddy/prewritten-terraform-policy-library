@@ -6,12 +6,12 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 5.8.0"
+      version = ">= 4.0.0, < 6.0.0"
     }
   }
 }
 
-input "defender-resource-manager-enabled-enforcement-level" {
+input "defender-resource-manager-on-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -26,7 +26,7 @@ resource_policy "azurerm_security_center_subscription_pricing" "defender_for_res
 
   filter = core::lower(local.resource_type) == "arm"
 
-  enforcement_level = input.defender-resource-manager-enabled-enforcement-level
+  enforcement_level = input.defender-resource-manager-on-enforcement-level
   enforce {
     condition     = core::lower(local.tier) == "standard"
     error_message = "Microsoft Defender for Resource Manager must be enabled: azurerm_security_center_subscription_pricing with resource_type 'Arm' must have tier 'Standard'."

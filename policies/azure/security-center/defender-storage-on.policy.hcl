@@ -6,12 +6,12 @@ policy {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 5.8.0"
+      version = ">= 4.0.0, < 6.0.0"
     }
   }
 }
 
-input "defender-storage-enabled-enforcement-level" {
+input "defender-storage-on-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -26,7 +26,7 @@ resource_policy "azurerm_security_center_subscription_pricing" "defender_for_sto
 
   filter = core::lower(local.resource_type) == "storageaccounts"
 
-  enforcement_level = input.defender-storage-enabled-enforcement-level
+  enforcement_level = input.defender-storage-on-enforcement-level
   enforce {
     condition     = core::lower(local.tier) == "standard"
     error_message = "Microsoft Defender for Storage must be enabled: azurerm_security_center_subscription_pricing with resource_type 'StorageAccounts' must have tier 'Standard'."

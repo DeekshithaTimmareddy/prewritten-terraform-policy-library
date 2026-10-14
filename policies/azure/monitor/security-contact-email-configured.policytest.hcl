@@ -81,10 +81,20 @@ resource "azurerm_security_center_contact" "fail_trailing_empty_email" {
   }
 }
 
-resource "azurerm_security_center_contact" "pass_non_default_contact_out_of_scope" {
+resource "azurerm_security_center_contact" "fail_non_default_contact_empty_email" {
+  expect_failure = true
   attrs = {
     name                = "secondary"
     email               = ""
+    alert_notifications = true
+    alerts_to_admins    = true
+  }
+}
+
+resource "azurerm_security_center_contact" "pass_non_default_contact_valid_email" {
+  attrs = {
+    name                = "security-team"
+    email               = "security@contoso.com"
     alert_notifications = true
     alerts_to_admins    = true
   }

@@ -119,6 +119,34 @@ resource "azurerm_subnet" "pass_write_only_version_deferred" {
   }
 }
 
+resource "azurerm_subnet" "pass_gateway_subnet_without_nsg" {
+  attrs = {
+    name = "GatewaySubnet"
+    id   = "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/GatewaySubnet"
+  }
+}
+
+resource "azurerm_subnet" "pass_azure_firewall_subnet_without_nsg" {
+  attrs = {
+    name = "AzureFirewallSubnet"
+    id   = "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/AzureFirewallSubnet"
+  }
+}
+
+resource "azurerm_subnet" "pass_azure_firewall_management_subnet_without_nsg" {
+  attrs = {
+    name = "AzureFirewallManagementSubnet"
+    id   = "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/AzureFirewallManagementSubnet"
+  }
+}
+
+resource "azurerm_subnet" "pass_route_server_subnet_without_nsg" {
+  attrs = {
+    name = "RouteServerSubnet"
+    id   = "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/RouteServerSubnet"
+  }
+}
+
 resource "azurerm_subnet" "fail_missing_association" {
   expect_failure = true
   attrs = {
@@ -289,13 +317,23 @@ resource "azurerm_virtual_network" "fail_inline_known_bad_among_unknown" {
   }
 }
 
-resource "azurerm_virtual_network" "fail_gateway_subnet_no_implicit_exemption" {
-  expect_failure = true
+resource "azurerm_virtual_network" "pass_gateway_subnet_case_insensitive" {
   attrs = {
     subnet = [{
-      name           = "GatewaySubnet"
+      name           = "gAtEwAySuBnEt"
       security_group = null
     }]
+  }
+}
+
+resource "azurerm_virtual_network" "pass_platform_subnets_without_nsg" {
+  attrs = {
+    subnet = [
+      { name = "GatewaySubnet", security_group = null },
+      { name = "AzureFirewallSubnet", security_group = null },
+      { name = "AzureFirewallManagementSubnet", security_group = null },
+      { name = "RouteServerSubnet", security_group = null },
+    ]
   }
 }
 

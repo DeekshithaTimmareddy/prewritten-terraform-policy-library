@@ -14,15 +14,15 @@ The policy evaluates `azurerm_security_center_subscription_pricing` resources wi
 
 **Enforcement note:** this resource-level check does not require an Arm pricing resource to be present in a plan that declares none. Enabling the Standard tier changes subscription-level settings and may incur charges.
 
-Enforcement defaults to `advisory` and can be configured with the `defender-resource-manager-enabled-enforcement-level` input.
+Enforcement defaults to `advisory` and can be configured with the `defender-resource-manager-on-enforcement-level` input.
 
-This rule is covered by the [defender-resource-manager-enabled](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/monitor/defender-resource-manager-enabled.policy.hcl) policy.
+This rule is covered by the [defender-resource-manager-on](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/azure/security-center/defender-resource-manager-on.policy.hcl) policy.
 
 ## Policy Results
 
 ```bash
 trace:
-	# defender-resource-manager-enabled.policytest.hcl...
+	# defender-resource-manager-on.policytest.hcl...
 	running
 	# resource.azurerm_security_center_subscription_pricing.pass_arm_standard...
 	running
@@ -56,7 +56,7 @@ trace:
 	running
 	# resource.azurerm_security_center_subscription_pricing.pass_arm_standard_with_null_subplan...
 	pass
-	# defender-resource-manager-enabled.policytest.hcl...
+	# defender-resource-manager-on.policytest.hcl...
 	pass
 ```
 

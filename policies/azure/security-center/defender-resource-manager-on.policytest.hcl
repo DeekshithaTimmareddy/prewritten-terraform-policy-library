@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["defender-resource-manager-enabled.policy.hcl"]
+  targets = ["defender-resource-manager-on.policy.hcl"]
 }
 
 resource "azurerm_security_center_subscription_pricing" "pass_arm_standard" {

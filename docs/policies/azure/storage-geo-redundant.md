@@ -6,7 +6,7 @@
 
 ## Description
 
-This control implements CIS Azure Foundations Benchmark v6.0.0 control 9.3.11.
+This policy is related to CIS Azure Foundations Benchmark v6.0.0 control 9.3.11. CIS scopes the control to critical storage accounts, but this policy has no criticality or tag selector and therefore evaluates every declared `azurerm_storage_account`.
 
 This control checks whether Azure storage accounts configure geo-redundant replication. Replication to a secondary region helps protect data availability during a regional outage.
 

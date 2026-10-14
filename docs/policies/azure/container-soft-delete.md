@@ -10,7 +10,7 @@ This control implements CIS Azure Foundations Benchmark v6.0.0 control 9.2.2.
 
 This control checks whether blob-capable Azure storage accounts enable container soft delete. Retaining deleted containers allows recovery from accidental or malicious deletion during the retention window.
 
-Declare `blob_properties.container_delete_retention_policy` with a retention period between 7 and 365 days. The policy models omitted or null retention days within an existing block as the AzureRM default of 7 days. A missing retention-policy block fails validation.
+Declare `blob_properties.container_delete_retention_policy` with a retention period of at least 7 days. The AzureRM provider limits this field to 365 days; that provider limit is not an additional CIS requirement. The policy models omitted or null retention days within an existing block as the AzureRM default of 7 days. A missing retention-policy block fails validation.
 
 **Enforcement note:** `FileStorage` accounts are outside scope because they do not provide blob containers. Blob soft delete and blob versioning are separate settings and do not substitute for container soft delete.
 
@@ -79,10 +79,6 @@ trace:
 	# resource.azurerm_storage_account.fail_days_one...
 	running
 	# resource.azurerm_storage_account.fail_days_one...
-	pass
-	# resource.azurerm_storage_account.fail_days_above_provider_range...
-	running
-	# resource.azurerm_storage_account.fail_days_above_provider_range...
 	pass
 	# container-soft-delete.policytest.hcl...
 	pass

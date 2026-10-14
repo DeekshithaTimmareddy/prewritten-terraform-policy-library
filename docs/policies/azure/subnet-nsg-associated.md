@@ -12,6 +12,8 @@ This control checks whether Terraform-managed Azure subnets have Network Securit
 
 Standalone subnets must have a resolved `network_security_group_id`, a matching `azurerm_subnet_network_security_group_association`, or a configured write-only NSG assignment version. Association resources must reference valid subnet and NSG ARM IDs. Inline virtual-network subnets are checked through their `security_group` attributes.
 
+Azure platform-managed subnets named `GatewaySubnet`, `AzureFirewallSubnet`, `AzureFirewallManagementSubnet`, or `RouteServerSubnet` are exempt because Azure does not allow NSG associations on them.
+
 **Enforcement note:** an association with an unresolved subnet ID does not establish protection for a different, known subnet ID. Unresolved subnet IDs and write-only assignments require resolved-value verification. A deferred or unknown result in a speculative plan is not proof that the subnet is protected, and an NSG association alone does not validate the NSG's rules.
 
 An omitted `security_group` on a declared inline subnet is null in schema-aware local tests and fails; it is not a computed-unknown fixture.

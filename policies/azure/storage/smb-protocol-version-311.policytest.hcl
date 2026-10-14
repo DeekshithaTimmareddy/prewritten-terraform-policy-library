@@ -7,6 +7,7 @@ policytest {
 resource "azurerm_storage_account" "pass_smb311_only" {
   attrs = {
     name                     = "sa912t00"
+    account_kind             = "StorageV2"
     account_replication_type = "LRS"
     account_tier             = "Standard"
     location                 = "eastus"
@@ -23,10 +24,37 @@ resource "azurerm_storage_account" "fail_share_properties_absent" {
   expect_failure = true
   attrs = {
     name                     = "sa912t01"
+    account_kind             = "StorageV2"
     account_replication_type = "LRS"
     account_tier             = "Standard"
     location                 = "eastus"
     resource_group_name      = "rg-test"
+  }
+}
+
+resource "azurerm_storage_account" "pass_block_blob_storage_out_of_scope" {
+  attrs = {
+    name                     = "sa912t12"
+    account_kind             = "BlockBlobStorage"
+    account_replication_type = "LRS"
+    account_tier             = "Premium"
+    location                 = "eastus"
+    resource_group_name      = "rg-test"
+  }
+}
+
+resource "azurerm_storage_account" "fail_file_storage_missing_smb_versions" {
+  expect_failure = true
+  attrs = {
+    name                     = "sa912t13"
+    account_kind             = "FileStorage"
+    account_replication_type = "LRS"
+    account_tier             = "Premium"
+    location                 = "eastus"
+    resource_group_name      = "rg-test"
+    share_properties = [{
+      smb = [{ multichannel_enabled = false }]
+    }]
   }
 }
 

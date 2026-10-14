@@ -1,12 +1,19 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["defender-cspm-enabled.policy.hcl"]
+  targets = ["defender-cspm-on.policy.hcl"]
 }
 
 resource "azurerm_security_center_subscription_pricing" "pass_cspm_standard" {
   attrs = {
     tier          = "Standard"
+    resource_type = "CloudPosture"
+  }
+}
+
+resource "azurerm_security_center_subscription_pricing" "pass_cspm_standard_case_insensitive" {
+  attrs = {
+    tier          = "standard"
     resource_type = "CloudPosture"
   }
 }
