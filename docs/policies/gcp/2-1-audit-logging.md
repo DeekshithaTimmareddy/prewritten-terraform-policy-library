@@ -8,7 +8,7 @@
 
 This control checks project, folder, and organization audit-log configurations for two conditions: audit configs must not exempt members, and an `allServices` config must include both `DATA_READ` and `DATA_WRITE`. Admin Activity (`ADMIN_READ`) is not required by this policy because Google enables it by default and it cannot be disabled.
 
-The policy checks both the dedicated `google_*_iam_audit_config` resources and `auditConfigs` in authoritative `google_*_iam_policy` resources. It requires an explicit default config in an organization IAM policy. Project and folder IAM policies may inherit their default config from a parent, so absence of a local config at those scopes is not treated as a violation.
+The policy checks both the dedicated `google_*_iam_audit_config` resources and `auditConfigs` in authoritative `google_*_iam_policy` resources. Dedicated audit-config resources are checked for the settings they declare; they do not by themselves prove that a complete effective default exists. An authoritative organization IAM policy must include an explicit `allServices` default because the organization has no parent from which to inherit one. Project and folder IAM policies may inherit their default config from a parent, so absence of a local config at those scopes is not treated as a violation.
 
 A configuration with no relevant audit-config or IAM-policy resources cannot be assessed. Inherited settings outside the Terraform plan are not visible to the policy.
 

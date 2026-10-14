@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure SQL instance configuration changes are monitored and alerted.
+# Ensure That the Log Metric Filter and Alerts Exist for SQL Instance Configuration Changes
 
 policy {
   required_providers {

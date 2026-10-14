@@ -22,6 +22,15 @@ resource "google_dns_managed_zone" "fail_zsk_rsasha1_upper" {
   }
 }
 
+resource "google_dns_managed_zone" "fail_zsk_case_insensitive_key_type" {
+  expect_failure = true
+  attrs = {
+    name          = "zone-fail_zsk_case_insensitive_key_type"
+    dns_name      = "fail_zsk_case_insensitive_key_type.example.com."
+    dnssec_config = [{ kind = "dns#managedZoneDnsSecConfig", state = "on", non_existence = "nsec3", default_key_specs = [{ algorithm = "RSASHA1", key_length = 1024, key_type = "ZONESIGNING", kind = "dns#dnsKeySpec" }] }]
+  }
+}
+
 resource "google_dns_managed_zone" "pass_zsk_rsasha256" {
   attrs = {
     name          = "zone-pass_zsk_rsasha256"

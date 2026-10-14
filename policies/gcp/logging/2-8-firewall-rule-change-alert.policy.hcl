@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure VPC firewall rule changes are monitored and alerted.
+# Ensure That the Log Metric Filter and Alerts Exist for VPC Network Firewall Rule Changes
 
 policy {
   required_providers {
@@ -51,21 +51,38 @@ locals {
     if core::length([for filter in local.enabled_firewall_alert_filters : filter if core::try(core::contains_substring(filter, "logging.googleapis.com/user/${name}\""), false) || core::try(core::contains_substring(filter, "logging.googleapis.com/user/${name}\\\""), false) || core::try(core::contains_substring(filter, "logging.googleapis.com/user/${name} "), false) || core::try(core::endswith(filter, "logging.googleapis.com/user/${name}"), false)]) > 0
   ]
 
-  firewall_change_control_compliant = core::length(local.matched_firewall_pairs) > 0
 }
 
 resource_policy "google_logging_metric" "firewall_rule_change_metric_and_alert" {
+  locals {
+    name_raw   = core::try(attrs.name, null)
+    name       = local.name_raw == null ? "" : local.name_raw
+    compliant  = core::contains(local.firewall_metric_names, local.name) && core::contains(local.matched_firewall_pairs, local.name)
+  }
+  filter = core::try(core::contains_substring(attrs.filter, "gce_firewall_rule"), false) || core::try(core::contains_substring(attrs.filter, "compute.firewalls."), false)
+
   enforcement_level = input.firewall-rule-alert-enforcement-level
   enforce {
-    condition     = local.firewall_change_control_compliant
+    condition     = local.compliant
     error_message = "A VPC firewall rule change metric must cover patch, insert, and delete events and be referenced by an enabled alert with a notification channel."
   }
 }
 
 resource_policy "google_monitoring_alert_policy" "firewall_rule_change_metric_and_alert" {
+  locals {
+    enabled_raw = core::try(attrs.enabled, null)
+    has_channel = core::length([for channel in core::try([for item in attrs.notification_channels : item], []) : channel if channel != null && channel != ""]) > 0
+    filters = core::flatten([for condition in core::try([for item in attrs.conditions : item], []) : [
+      [for threshold in core::try([for item in condition.condition_threshold : item], []) : core::try(threshold.filter, "")],
+      [for absent in core::try([for item in condition.condition_absent : item], []) : core::try(absent.filter, "")]
+    ]])
+    references_firewall_metric = core::length([for name in local.firewall_metric_names : name if name != "" && core::length([for filter in local.filters : filter if core::try(core::regex("logging\\.googleapis\\.com/user/${name}([^A-Za-z0-9_./-]|$)", filter), null) != null]) > 0]) > 0
+  }
+  filter = local.references_firewall_metric
+
   enforcement_level = input.firewall-rule-alert-enforcement-level
   enforce {
-    condition     = local.firewall_change_control_compliant
+    condition     = local.enabled_raw != false && local.has_channel
     error_message = "An enabled alert with a notification channel must reference a VPC firewall rule change metric."
   }
 }

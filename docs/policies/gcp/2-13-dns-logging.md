@@ -8,7 +8,7 @@
 
 This control checks that each `google_compute_network` is associated with a `google_dns_policy` that has `enable_logging = true`. Network associations are matched by project-qualified network ID or self-link, or by a qualified reference constructed from a known project and network name. A same-named network in another project and an unqualified bare name do not satisfy the check. DNS policies with no attached networks are outside this check.
 
-The policy only evaluates network and DNS-policy resources in the Terraform plan. It cannot account for policies or networks managed outside the plan, or reliably resolve network URLs that are unknown at plan time. The additional recommendation to block outbound DNS traffic is not enforced.
+The policy only evaluates network and DNS-policy resources in the Terraform plan. A plan with no VPC network resources cannot establish that this control is satisfied because there is no network to evaluate. It cannot account for policies or networks managed outside the plan, or reliably resolve network URLs that are unknown at plan time. The additional recommendation to block outbound DNS traffic is not enforced.
 
 This rule is covered by the [2-13-dns-logging](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/gcp/logging/2-13-dns-logging.policy.hcl) policy.
 

@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure logging is enabled for HTTP(S) load balancer backend services.
+# Ensure Logging Is Enabled for HTTP(S) Load Balancers
 
 policy {
   required_providers {

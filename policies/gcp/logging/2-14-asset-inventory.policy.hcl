@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure Cloud Asset Inventory is enabled for GCP projects.
+# Ensure Cloud Asset Inventory Is Enabled
 
 policy {
   required_providers {

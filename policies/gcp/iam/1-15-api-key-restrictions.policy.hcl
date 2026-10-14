@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure API keys are restricted to the APIs required by the application.
+# Ensure API Keys Are Restricted to Only APIs That an Application Needs Access To
 
 policy {
   required_providers {

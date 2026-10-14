@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure custom role changes are monitored and alerted.
+# Ensure That the Log Metric Filter and Alerts Exist for Custom Role Changes
 
 policy {
   required_providers {

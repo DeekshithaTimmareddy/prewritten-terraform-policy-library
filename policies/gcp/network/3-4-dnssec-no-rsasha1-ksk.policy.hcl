@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure DNSSEC key-signing keys do not use RSASHA1.
+# Ensure RSASHA1 Is Not Used for the Key-Signing Key in Cloud DNS DNSSEC
 
 policy {
   required_providers {

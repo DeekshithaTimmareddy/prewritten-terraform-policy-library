@@ -112,7 +112,7 @@ resource "google_logging_metric" "fail_empty_filter" {
   expect_failure = true
   attrs = {
     name   = "fw-empty-filter"
-    filter = ""
+    filter = "resource.type=\"gce_firewall_rule\""
   }
 }
 

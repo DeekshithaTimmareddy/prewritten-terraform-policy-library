@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure Cloud DNS logging is enabled for VPC networks.
+# Ensure That Cloud DNS Logging Is Enabled for All VPC Networks
 
 policy {
   required_providers {

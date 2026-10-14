@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure log sink buckets have a locked retention policy.
+# Ensure That Retention Policies on Cloud Storage Buckets Used for Exporting Logs Are Configured Using Bucket Lock
 
 policy {
   required_providers {

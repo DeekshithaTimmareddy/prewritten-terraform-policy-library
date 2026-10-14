@@ -8,6 +8,10 @@
 
 This control checks that each planned `google_project` has a corresponding `google_project_service` enabling `cloudasset.googleapis.com`. If the plan contains no `google_project` resources, the policy instead requires at least one Cloud Asset API service resource in the configuration.
 
+In that no-project fallback, a plan containing only an unrelated service such as `compute.googleapis.com` fails this control unless a `cloudasset.googleapis.com` service resource is also declared. This fallback is evaluated across the configuration, not per service resource.
+
+If the plan contains neither `google_project` nor `google_project_service` resources, the policy cannot detect the missing API declaration because there is no resource to evaluate.
+
 API enablement performed outside the Terraform plan cannot be checked. When correlating services to projects, an omitted `google_project_service.project` is treated as the provider-default project and may match any project. The no-project fallback checks the configuration as a whole, not each project independently.
 
 This rule is covered by the [2-14-asset-inventory](https://github.com/hashicorp/prewritten-terraform-policy-library/blob/main/policies/gcp/logging/2-14-asset-inventory.policy.hcl) policy.

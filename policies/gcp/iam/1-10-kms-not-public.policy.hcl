@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure Cloud KMS crypto keys are not publicly accessible.
+# Ensure That Cloud KMS Cryptokeys Are Not Anonymously or Publicly Accessible
 
 policy {
   required_providers {

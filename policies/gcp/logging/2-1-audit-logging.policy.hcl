@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure Cloud Audit Logging is configured properly.
+# Ensure That Cloud Audit Logging Is Configured Properly
 
 policy {
   required_providers {

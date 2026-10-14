@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure VPC network changes are monitored and alerted.
+# Ensure That the Log Metric Filter and Alerts Exist for VPC Network Changes
 
 policy {
   required_providers {

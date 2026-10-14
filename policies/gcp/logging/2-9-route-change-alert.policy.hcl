@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure VPC route changes are monitored and alerted.
+# Ensure That the Log Metric Filter and Alerts Exist for VPC Network Route Changes
 
 policy {
   required_providers {

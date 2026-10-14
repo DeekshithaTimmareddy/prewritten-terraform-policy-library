@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure DNSSEC is enabled for public Cloud DNS managed zones.
+# Ensure DNSSEC Is Enabled for Public Cloud DNS Zones
 
 input "dnssec-enforcement-level" {
   type    = string

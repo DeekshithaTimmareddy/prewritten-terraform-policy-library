@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure Essential Contacts are configured for each organization.
+# Ensure Essential Contacts Is Configured for the Organization
 
 policy {
   required_providers {

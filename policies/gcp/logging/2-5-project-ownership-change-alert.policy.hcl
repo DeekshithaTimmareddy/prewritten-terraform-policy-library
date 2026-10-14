@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure project ownership changes are monitored and alerted.
+# Ensure Log Metric Filter and Alerts Exist for Project Ownership Assignments and Changes
 
 policy {
   required_providers {

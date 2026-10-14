@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure KMS encryption keys are rotated within 90 days.
+# Ensure KMS Encryption Keys Are Rotated Within a Period of 90 Days
 
 policy {
   required_providers {

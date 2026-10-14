@@ -1,6 +1,6 @@
 # Copyright IBM Corp. 2026
 
-# Ensure log sinks are configured for all log entries.
+# Ensure That Sinks Are Configured for All Log Entries
 
 policy {
   required_providers {
