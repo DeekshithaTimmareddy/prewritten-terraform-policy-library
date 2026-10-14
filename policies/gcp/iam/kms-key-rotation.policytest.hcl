@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["1-11-kms-key-rotation.policy.hcl"]
+  targets = ["kms-key-rotation.policy.hcl"]
 }
 
 resource "google_kms_crypto_key" "pass_90d" {

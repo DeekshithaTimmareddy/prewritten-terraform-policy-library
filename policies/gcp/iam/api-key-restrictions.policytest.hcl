@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["1-15-api-key-restrictions.policy.hcl"]
+  targets = ["api-key-restrictions.policy.hcl"]
 }
 
 resource "google_apikeys_key" "pass_single_target" {

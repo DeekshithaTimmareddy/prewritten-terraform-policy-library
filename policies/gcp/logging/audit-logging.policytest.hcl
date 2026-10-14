@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-1-audit-logging.policy.hcl"]
+  targets = ["audit-logging.policy.hcl"]
 }
 
 resource "google_project_iam_audit_config" "pass_all_types" {

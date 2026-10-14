@@ -1,13 +1,13 @@
 policytest {
   targets = [
-    "2-5-project-ownership-change-alert.policy.hcl",
-    "2-6-audit-config-change-alert.policy.hcl",
-    "2-7-custom-role-change-alert.policy.hcl",
-    "2-8-firewall-rule-change-alert.policy.hcl",
-    "2-9-route-change-alert.policy.hcl",
-    "2-10-network-change-alert.policy.hcl",
-    "2-11-storage-iam-change-alert.policy.hcl",
-    "2-12-sql-config-change-alert.policy.hcl"
+    "project-ownership-change-alert.policy.hcl",
+    "audit-config-change-alert.policy.hcl",
+    "custom-role-change-alert.policy.hcl",
+    "firewall-rule-change-alert.policy.hcl",
+    "route-change-alert.policy.hcl",
+    "network-change-alert.policy.hcl",
+    "storage-iam-change-alert.policy.hcl",
+    "sql-config-change-alert.policy.hcl"
   ]
 }
 

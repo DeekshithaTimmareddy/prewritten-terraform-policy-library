@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-17-load-balancer-logging.policy.hcl"]
+  targets = ["load-balancer-logging.policy.hcl"]
 }
 
 resource "google_compute_backend_service" "pass_gl_https_enabled" {

@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-11-storage-iam-change-alert.policy.hcl"]
+  targets = ["storage-iam-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "pass_f1_compliant" {

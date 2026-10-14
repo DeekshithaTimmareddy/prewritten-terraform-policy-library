@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-7-custom-role-change-alert.policy.hcl"]
+  targets = ["custom-role-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "pass_full_filter_enabled_alert" {

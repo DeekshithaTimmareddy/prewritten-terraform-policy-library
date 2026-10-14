@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["1-5-service-account-keys.policy.hcl"]
+  targets = ["service-account-keys.policy.hcl"]
 }
 
 resource "google_service_account" "pass_sa_without_keys" {

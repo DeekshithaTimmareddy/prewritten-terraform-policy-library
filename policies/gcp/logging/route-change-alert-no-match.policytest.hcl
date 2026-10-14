@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-9-route-change-alert.policy.hcl"]
+  targets = ["route-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "fail_absent_condition_only" {

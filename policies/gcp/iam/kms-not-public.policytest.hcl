@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["1-10-kms-not-public.policy.hcl"]
+  targets = ["kms-not-public.policy.hcl"]
 }
 
 resource "google_kms_crypto_key_iam_member" "pass_member_user" {

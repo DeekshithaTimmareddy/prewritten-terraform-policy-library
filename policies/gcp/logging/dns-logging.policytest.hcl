@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-13-dns-logging.policy.hcl"]
+  targets = ["dns-logging.policy.hcl"]
 }
 
 resource "google_compute_network" "pass_net_a" {

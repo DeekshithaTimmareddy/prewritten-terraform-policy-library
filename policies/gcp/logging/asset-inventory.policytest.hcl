@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-14-asset-inventory.policy.hcl"]
+  targets = ["asset-inventory.policy.hcl"]
 }
 
 resource "google_project" "pass_project_with_cloudasset" {

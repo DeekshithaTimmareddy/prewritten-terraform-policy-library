@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["3-3-dnssec-enabled.policy.hcl"]
+  targets = ["dnssec-enabled.policy.hcl"]
 }
 
 resource "google_dns_managed_zone" "pass_public_on" {

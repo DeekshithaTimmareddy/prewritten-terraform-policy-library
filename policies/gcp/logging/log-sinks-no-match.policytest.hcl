@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-3-log-sinks.policy.hcl"]
+  targets = ["log-sinks.policy.hcl"]
 }
 
 resource "google_logging_project_sink" "fail_disabled_all_logs_sink" {

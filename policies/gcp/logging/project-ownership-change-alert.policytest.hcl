@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-5-project-ownership-change-alert.policy.hcl"]
+  targets = ["project-ownership-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "pass_full_with_alert" {

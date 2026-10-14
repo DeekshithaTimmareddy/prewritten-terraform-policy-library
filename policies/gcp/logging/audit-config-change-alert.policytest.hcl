@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-6-audit-config-change-alert.policy.hcl"]
+  targets = ["audit-config-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "audit_cfg_ok" {

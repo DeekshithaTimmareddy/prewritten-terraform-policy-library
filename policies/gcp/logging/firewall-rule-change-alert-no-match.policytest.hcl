@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-8-firewall-rule-change-alert.policy.hcl"]
+  targets = ["firewall-rule-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "fail_negated_methods_with_alert" {

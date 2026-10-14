@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["1-17-essential-contacts.policy.hcl"]
+  targets = ["essential-contacts.policy.hcl"]
 }
 
 resource "google_essential_contacts_contact" "pass_org_all" {

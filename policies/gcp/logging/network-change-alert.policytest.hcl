@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-10-network-change-alert.policy.hcl"]
+  targets = ["network-change-alert.policy.hcl"]
 }
 
 resource "google_logging_metric" "vpc_ok" {

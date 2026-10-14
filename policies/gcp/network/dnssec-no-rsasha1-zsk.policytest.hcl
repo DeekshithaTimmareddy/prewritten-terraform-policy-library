@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["3-5-dnssec-no-rsasha1-zsk.policy.hcl"]
+  targets = ["dnssec-no-rsasha1-zsk.policy.hcl"]
 }
 
 resource "google_dns_managed_zone" "fail_zsk_rsasha1" {

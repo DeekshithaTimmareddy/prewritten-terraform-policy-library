@@ -1,7 +1,7 @@
 # Copyright IBM Corp. 2026
 
 policytest {
-  targets = ["2-4-log-export-bucket-lock.policy.hcl"]
+  targets = ["log-export-bucket-lock.policy.hcl"]
 }
 
 resource "google_storage_bucket" "logs_b01" {
