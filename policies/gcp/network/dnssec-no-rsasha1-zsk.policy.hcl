@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "dnssec-zsk-enforcement-level" {
+input "dnssec-no-rsasha1-zsk-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -24,7 +24,7 @@ resource_policy "google_dns_managed_zone" "zsk_not_rsasha1" {
     rsasha1_zsks   = [for a in local.zsk_algorithms : a if core::lower(a) == "rsasha1"]
   }
 
-  enforcement_level = input.dnssec-zsk-enforcement-level
+  enforcement_level = input.dnssec-no-rsasha1-zsk-enforcement-level
 
   enforce {
     condition     = core::length(local.rsasha1_zsks) == 0

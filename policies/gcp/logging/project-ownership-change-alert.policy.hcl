@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "project-ownership-alert-enforcement-level" {
+input "project-ownership-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -44,7 +44,7 @@ resource_policy "google_logging_metric" "project_ownership_metric_and_alert" {
 
   filter = core::try(core::contains_substring(attrs.filter, "roles/owner"), false) || core::try(core::contains_substring(attrs.filter, "ProjectOwnership"), false) || core::try(core::contains_substring(attrs.filter, "projectOwnerInvitee"), false) || core::try(core::contains_substring(attrs.filter, "cloudresourcemanager.googleapis.com"), false)
 
-  enforcement_level = input.project-ownership-alert-enforcement-level
+  enforcement_level = input.project-ownership-change-alert-enforcement-level
 
   enforce {
     condition     = local.filter_ok && local.alert_ok

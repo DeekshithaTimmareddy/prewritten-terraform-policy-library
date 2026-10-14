@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "dnssec-ksk-enforcement-level" {
+input "dnssec-no-rsasha1-ksk-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -23,7 +23,7 @@ resource_policy "google_dns_managed_zone" "ksk_not_rsasha1" {
     bad_ksks      = [for s in local.key_specs : s if core::try(core::lower(s.key_type), "") == "keysigning" && core::try(core::lower(s.algorithm), "") == "rsasha1"]
   }
 
-  enforcement_level = input.dnssec-ksk-enforcement-level
+  enforcement_level = input.dnssec-no-rsasha1-ksk-enforcement-level
 
   enforce {
     condition     = core::length(local.bad_ksks) == 0

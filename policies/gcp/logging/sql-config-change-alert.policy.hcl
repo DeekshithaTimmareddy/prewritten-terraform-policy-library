@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "sql-config-alert-enforcement-level" {
+input "sql-config-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -42,7 +42,7 @@ resource_policy "google_logging_metric" "sql_instance_config_change_metric" {
   }
   filter = local.in_scope
 
-  enforcement_level = input.sql-config-alert-enforcement-level
+  enforcement_level = input.sql-config-change-alert-enforcement-level
   enforce {
     condition     = local.name != "" && local.prescribed && local.alerted
     error_message = "SQL instance configuration metric '${local.name}' must use the prescribed update filter and be referenced by an enabled alert threshold with a notification channel."
@@ -57,7 +57,7 @@ resource_policy "google_monitoring_alert_policy" "sql_instance_config_change_ale
     filters     = [for condition in core::try([for item in attrs.conditions : item], []) : core::try(condition.condition_threshold[0].filter, null) == null ? "" : condition.condition_threshold[0].filter]
     linked      = core::length([for name in local.sql_metric_names : name if core::length([for filter in local.filters : filter if core::contains_substring(filter, "logging.googleapis.com/user/${name}\"") || core::contains_substring(filter, "logging.googleapis.com/user/${name}\\\"") || core::endswith(filter, "logging.googleapis.com/user/${name}")]) > 0]) > 0
   }
-  enforcement_level = input.sql-config-alert-enforcement-level
+  enforcement_level = input.sql-config-change-alert-enforcement-level
   enforce {
     condition     = !local.linked || (!local.is_disabled && local.has_channel)
     error_message = "An alert policy referencing a SQL instance configuration metric must be enabled and have a notification channel."

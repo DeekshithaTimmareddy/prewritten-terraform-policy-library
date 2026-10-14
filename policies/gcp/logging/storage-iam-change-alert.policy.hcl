@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "storage-iam-alert-enforcement-level" {
+input "storage-iam-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -47,7 +47,7 @@ resource_policy "google_logging_metric" "gcs_iam_change_metric_and_alert" {
   }
   filter = core::try(core::contains_substring(attrs.filter, "gcs_bucket"), false) || core::try(core::contains_substring(attrs.filter, "storage.setIamPermissions"), false)
 
-  enforcement_level = input.storage-iam-alert-enforcement-level
+  enforcement_level = input.storage-iam-change-alert-enforcement-level
   enforce {
     condition     = local.compliant
     error_message = "At least one Cloud Storage IAM-change log metric must be referenced by an enabled alert policy condition threshold with a notification channel."
@@ -63,7 +63,7 @@ resource_policy "google_monitoring_alert_policy" "gcs_iam_change_metric_and_aler
   }
   filter = local.references_storage_iam_metric
 
-  enforcement_level = input.storage-iam-alert-enforcement-level
+  enforcement_level = input.storage-iam-change-alert-enforcement-level
   enforce {
     condition     = local.enabled_raw != false && local.has_channel
     error_message = "An enabled alert with a notification channel must reference a Cloud Storage IAM-change log metric."

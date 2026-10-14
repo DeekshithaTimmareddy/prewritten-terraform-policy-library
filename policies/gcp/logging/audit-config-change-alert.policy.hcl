@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "audit-config-alert-enforcement-level" {
+input "audit-config-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -49,7 +49,7 @@ resource_policy "google_logging_metric" "audit_config_change_metric_alert" {
 
   filter = local.in_scope
 
-  enforcement_level = input.audit-config-alert-enforcement-level
+  enforcement_level = input.audit-config-change-alert-enforcement-level
 
   enforce {
     condition     = local.filter_ok && core::length(local.matching_alerts) > 0

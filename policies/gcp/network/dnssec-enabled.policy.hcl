@@ -2,7 +2,7 @@
 
 # Ensure DNSSEC Is Enabled for Public Cloud DNS Zones
 
-input "dnssec-enforcement-level" {
+input "dnssec-enabled-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -17,7 +17,7 @@ resource_policy "google_dns_managed_zone" "dnssec_enabled_public_zones" {
 
   filter = local.visibility != "private"
 
-  enforcement_level = input.dnssec-enforcement-level
+  enforcement_level = input.dnssec-enabled-enforcement-level
 
   enforce {
     condition     = local.state == "on"

@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "firewall-rule-alert-enforcement-level" {
+input "firewall-rule-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -61,7 +61,7 @@ resource_policy "google_logging_metric" "firewall_rule_change_metric_and_alert" 
   }
   filter = core::try(core::contains_substring(attrs.filter, "gce_firewall_rule"), false) || core::try(core::contains_substring(attrs.filter, "compute.firewalls."), false)
 
-  enforcement_level = input.firewall-rule-alert-enforcement-level
+  enforcement_level = input.firewall-rule-change-alert-enforcement-level
   enforce {
     condition     = local.compliant
     error_message = "A VPC firewall rule change metric must cover patch, insert, and delete events and be referenced by an enabled alert with a notification channel."
@@ -80,7 +80,7 @@ resource_policy "google_monitoring_alert_policy" "firewall_rule_change_metric_an
   }
   filter = local.references_firewall_metric
 
-  enforcement_level = input.firewall-rule-alert-enforcement-level
+  enforcement_level = input.firewall-rule-change-alert-enforcement-level
   enforce {
     condition     = local.enabled_raw != false && local.has_channel
     error_message = "An enabled alert with a notification channel must reference a VPC firewall rule change metric."

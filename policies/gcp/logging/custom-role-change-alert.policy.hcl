@@ -11,7 +11,7 @@ policy {
   }
 }
 
-input "custom-role-alert-enforcement-level" {
+input "custom-role-change-alert-enforcement-level" {
   type    = string
   default = "advisory"
 }
@@ -36,7 +36,7 @@ locals {
 }
 
 provider_policy "google" "custom_role_changes_metric_alert_project" {
-  enforcement_level = input.custom-role-alert-enforcement-level
+  enforcement_level = input.custom-role-change-alert-enforcement-level
   enforce {
     condition     = local.control_satisfied
     error_message = "At least one custom-role log metric with the prescribed filter must be referenced by an enabled google_monitoring_alert_policy."
@@ -54,7 +54,7 @@ resource_policy "google_logging_metric" "custom_role_changes_metric_alert" {
 
   filter = local.is_candidate
 
-  enforcement_level = input.custom-role-alert-enforcement-level
+  enforcement_level = input.custom-role-change-alert-enforcement-level
   enforce {
     condition     = local.filter_ok && local.alert_ok
     error_message = "Custom-role log metric '${local.name}' must use the prescribed filter and be referenced by an enabled alert policy condition."
