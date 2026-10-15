@@ -39,6 +39,7 @@ policies/
 │   └── workspaces/
 ├── azure/
 │   ├── iam/
+│   ├── monitor/
 │   ├── network/
 │   └── storage/
 └── gcp/
