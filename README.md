@@ -1,4 +1,4 @@
-# Prewritten Terraform policy Library - Beta
+# Prewritten Terraform policy Library
 
 A library of prewritten terraform policies for multiple cloud providers.
 
@@ -6,27 +6,25 @@ A library of prewritten terraform policies for multiple cloud providers.
 
 | Provider | Services covered | Policies |
 | -------- | ----------- | -------- |
-| AWS | 58 services | 348 |
+| AWS | 60 services | 396 |
 | Azure | 8 services | 82 |
 | GCP | 8 services | 68 |
 
 Additional providers will be added in future releases.
 
-## AWS — Foundational Security Best Practices (FSBP)
+## Supported Standards
 
-The AWS policies in this library implement controls from the [AWS Foundational Security Best Practices (FSBP) standard](https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html) as defined in AWS Security Hub CSPM. FSBP is a compilation of security best practices developed by AWS and industry professionals that detects when AWS accounts and resources deviate from security best practices.
+| Provider | Standard | Policies included | Reference |
+| -------- | -------- | ----------------- | --------- |
+| AWS | AWS Foundational Security Best Practices (FSBP) | 340 | [AWS Security Hub: FSBP](https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html) |
+| AWS | CIS AWS Foundations Benchmark (v1.2.0, v1.4.0, v3.0.0, v5.0.0) | 44 | [AWS Security Hub: CIS AWS Foundations Benchmark](https://docs.aws.amazon.com/securityhub/latest/userguide/cis-aws-foundations-benchmark.html) |
+| AWS | NIST SP 800-53 Rev. 5 | 277 | [AWS Security Hub: NIST SP 800-53 Rev. 5](https://docs.aws.amazon.com/securityhub/latest/userguide/standards-reference-nist-800-53.html) |
+| AWS | PCI DSS (v3.2.1, v4.0.1) | 137 | [AWS Security Hub: PCI DSS](https://docs.aws.amazon.com/securityhub/latest/userguide/pci-standard.html) |
+| AWS | AI Security Best Practices | 21 | [AWS Security Hub: AI Security Best Practices](https://docs.aws.amazon.com/securityhub/latest/userguide/standards-ai-security.html) |
+| Azure | CIS Microsoft Azure Foundations Benchmark v6.0.0 | 82 | [CIS Azure Foundations Benchmark](https://www.cisecurity.org/benchmark/azure) |
+| GCP | CIS Google Cloud Platform Foundation Benchmark v5.0.0 | 68 | [CIS Google Cloud Platform Foundation Benchmark](https://www.cisecurity.org/benchmark/google_cloud_computing_platform) |
 
-## Azure — CIS Azure Foundations Benchmark
-
-The Azure policies in this library implement a subset of controls from the [CIS Azure Foundations Benchmark](https://www.cisecurity.org/benchmark/azure). The CIS Azure Benchmark is a set of security configuration best practices for Microsoft Azure developed by the Center for Internet Security (CIS).
-
-> **Note:** Only a subset of the CIS Azure Benchmark controls are currently implemented as policies in this library — not the full benchmark. Coverage will expand in future releases.
-
-## GCP — CIS GCP Foundations Benchmark
-
-The GCP policies in this library implement a subset of controls from the [CIS Google Cloud Platform Foundation Benchmark](https://www.cisecurity.org/benchmark/google_cloud_computing_platform). The CIS GCP Benchmark is a set of security configuration best practices for Google Cloud Platform developed by the Center for Internet Security (CIS).
-
-> **Note:** Only a subset of the CIS GCP Benchmark controls are currently implemented as policies in this library — not the full benchmark. Coverage will expand in future releases.
+> **Note:** A single AWS policy can implement controls from more than one standard, so the AWS rows add up to more than the 396 AWS policies. Only a subset of each standard's controls is implemented; some controls cannot be evaluated from a Terraform plan. Coverage will expand in future releases.
 
 ## Repository structure
 
@@ -35,7 +33,7 @@ policies/
 ├── aws/
 │   ├── acm/
 │   ├── apigateway/
-│   ├── ...                  (58 service folders)
+│   ├── ...                  (60 service folders)
 │   └── workspaces/
 ├── azure/
 │   ├── databricks/
